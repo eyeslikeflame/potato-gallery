@@ -1,0 +1,16 @@
+:host {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 56px 1fr;
+    min-height: 100vh;
+}
+
+header {
+    position: sticky;
+    background: #ffffff;
+    box-shadow: 0 0px 8px 0 rgba(0,0,0,0.1);
+}
+
+main {
+    background: #f0f0f0;
+}

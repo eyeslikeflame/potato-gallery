@@ -1,0 +1,32 @@
+@import "@material/image-list/mdc-image-list";
+
+.my-image-list {
+    @include mdc-image-list-standard-columns(6);
+}
+
+li {
+    cursor: pointer;
+    outline: none;
+}
+
+.add-wrap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 0 0 2px #3126FF;
+
+    i {
+        font-size: 64px;
+        color: #3126FF;
+    }
+}
+
+.favorite {
+    cursor: pointer;
+    user-select: none;
+}
