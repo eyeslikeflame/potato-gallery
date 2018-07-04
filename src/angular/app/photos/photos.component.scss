@@ -1,1 +1,20 @@
-@import "@material/textfield/mdc-text-field";
+@import '@material/textfield/mdc-text-field';
+@import '@material/image-list/mdc-image-list';
+
+.my-masonry-image-list {
+    @include mdc-image-list-masonry-columns(6);
+
+    @media screen and (max-width: 1280px) {
+        @include mdc-image-list-masonry-columns(4);
+    }
+    @media screen and (max-width: 700px) {
+        @include mdc-image-list-masonry-columns(2);
+    }
+}
+
+li {
+    outline: none;
+    .mdc-image-list__image-aspect-container {
+        cursor: pointer;
+    }
+}

@@ -16,7 +16,7 @@ const routes: Routes = [
         component: GalleryComponent
     },
     {
-        path: 'new-album',
+        path: 'album',
         component: PhotosComponent
     }
 ];

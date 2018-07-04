@@ -3,3 +3,21 @@
     <label class="mdc-floating-label" for="my-text-field">Hint text</label>
     <div class="mdc-line-ripple"></div>
 </div>
+<button (click)="save()">
+    Save
+</button>
+
+<div class="photos-wrapper">
+    <input type="file" (change)="load($event.target.files)" accept=".jpg,.png" multiple>
+    <ul class="mdc-image-list mdc-image-list--masonry my-masonry-image-list album">
+        <li class="mdc-image-list__item" *ngFor="let img of imgArray">
+            <img class="mdc-image-list__image" [src]="img?.src">
+
+            <div class="mdc-image-list__supporting">
+                <span class="mdc-image-list__label">{{img?.title}}</span>
+            </div>
+
+        </li>
+    </ul>
+
+</div>

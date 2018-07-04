@@ -2,8 +2,8 @@
     "name": "gallery",
     "version": "0.0.0",
     "scripts": {
-        "dev": " tsc -p ./src/node/tsconfig.node.json --allowJS -w && ng build --watch && nodemon ./dist-server/www.js -w ./dist-server",
-        "compile": "tsc -p ./src/node/tsconfig.node.json --allowJS -w"
+        "compile": "tsc -p ./src/node/tsconfig.node.json --allowJS -w",
+        "dev": "concurrently \"tsc -p ./src/node/tsconfig.node.json --allowJS -w\" \"ng build --watch\" \"nodemon ./dist-server/www.js -w ./dist-server\""
     },
     "private": true,
     "dependencies": {
@@ -22,6 +22,7 @@
         "core-js": "^2.5.4",
         "debug": "~2.6.9",
         "express": "~4.16.0",
+        "formidable": "^1.2.1",
         "hbs": "~4.0.1",
         "http-errors": "~1.6.2",
         "mongoose": "^5.2.1",
@@ -39,6 +40,7 @@
         "@types/jasminewd2": "~2.0.3",
         "@types/node": "~8.9.4",
         "codelyzer": "~4.2.1",
+        "concurrently": "^3.6.0",
         "jasmine-core": "~2.99.1",
         "jasmine-spec-reporter": "~4.2.1",
         "karma": "~1.7.1",

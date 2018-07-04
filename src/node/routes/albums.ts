@@ -1,6 +1,6 @@
 import * as express from 'express';
+
 const globalAny: any = global;
-import * as path from 'path';
 import AlbumsController from '../controllers/albums.controller';
 
 class AlbumsRoute {
@@ -14,7 +14,8 @@ class AlbumsRoute {
     }
 
     private setRouter(): void {
-        this.router.get('/', this.controller.getAlbums);
+        this.router.get( '/', this.controller.getAlbums );
+        this.router.post( '/new-album/save', this.controller.createAlbum );
     }
 }
 
