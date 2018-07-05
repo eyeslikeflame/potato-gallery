@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router'
 import { PhotosService } from './photos.service';
 
 @Component( {
@@ -9,15 +10,25 @@ import { PhotosService } from './photos.service';
 } )
 export class PhotosComponent implements OnInit {
     public imgArray = [];
+    public album;
     private files;
-    constructor( private photosService: PhotosService ) {
+    title = '';
+    constructor( private photosService: PhotosService, private route: ActivatedRoute ) {
     }
 
     ngOnInit() {
+        this.route.queryParams.subscribe( query => {
+            if (query.id) {
+                this.photosService.getAlbum(query.id).subscribe( album => {
+                    this.album = album;
+                });
+            }
+        });
     }
 
     save() {
-        this.photosService.saveAlbum( { title: 'ololol' }, this.files ).subscribe(albums => {});
+        const title = this.title || 'Untitled';
+        this.photosService.saveAlbum( { title: title }, this.files ).subscribe(albums => {});
     }
 
     load(files) {
@@ -30,12 +41,10 @@ export class PhotosComponent implements OnInit {
                 _this.imgArray[i] = {
                     src: event.target.result,
                     title: files[i].name.replace(/\.[a-zA-Z]+$/, '')
-                }
+                };
             };
 
             reader.readAsDataURL(files[i]);
         }
-        // this.imgArray = files;
-        console.log(files)
     }
 }

@@ -17,4 +17,11 @@ export class GalleryComponent implements OnInit {
         this.galleryService.getAlbums().subscribe(albums => this.albums = albums);
     }
 
+    public deleteAlbum(id, index) {
+        this.galleryService.deleteAlbum(id).subscribe( deleted => {
+            this.albums[index] = undefined;
+            console.log(deleted);
+        });
+    }
+
 }

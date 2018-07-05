@@ -1,5 +1,5 @@
 <div class="mdc-text-field">
-    <input type="text" id="my-text-field" class="mdc-text-field__input">
+    <input type="text" id="my-text-field" class="mdc-text-field__input" [(ngModel)]="title">
     <label class="mdc-floating-label" for="my-text-field">Hint text</label>
     <div class="mdc-line-ripple"></div>
 </div>
@@ -9,6 +9,16 @@
 
 <div class="photos-wrapper">
     <input type="file" (change)="load($event.target.files)" accept=".jpg,.png" multiple>
+    <ul class="mdc-image-list mdc-image-list--masonry my-masonry-image-list album" *ngIf="album">
+        <li class="mdc-image-list__item" *ngFor="let photo of album.photos">
+            <img class="mdc-image-list__image" [src]="photo?.src">
+
+            <div class="mdc-image-list__supporting">
+                <span class="mdc-image-list__label">{{photo?.title}}</span>
+            </div>
+
+        </li>
+    </ul>
     <ul class="mdc-image-list mdc-image-list--masonry my-masonry-image-list album">
         <li class="mdc-image-list__item" *ngFor="let img of imgArray">
             <img class="mdc-image-list__image" [src]="img?.src">
@@ -19,5 +29,4 @@
 
         </li>
     </ul>
-
 </div>

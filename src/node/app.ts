@@ -5,11 +5,13 @@ import * as cookieParser from 'cookie-parser' ;
 import * as bodyParser from 'body-parser' ;
 import * as hbs from 'handlebars';
 import MongoClient from './models/db.model';
-
+import * as fs from 'fs';
 import { albums } from './routes/albums';
-
+import { photos } from './routes/photos';
 const globalAny: any = global;
 globalAny.appRoot    = process.cwd();
+
+
 
 class App {
     public express: express.Application;
@@ -19,6 +21,10 @@ class App {
         MongoClient.connect();
         this.middleware();
         this.routes();
+
+        if (!fs.existsSync(path.join(globalAny.appRoot, '/pictures'))) {
+            fs.mkdirSync(path.join(globalAny.appRoot, '/pictures'));
+        }
     }
 
 
@@ -34,6 +40,7 @@ class App {
     }
 
     private routes(): void {
+        this.express.use( '/api/photos', photos );
         this.express.use( '/api/albums', albums );
         this.express.get( '*', ( request, response ) => {
             response.render( path.join( globalAny.appRoot , 'dist/index.hbs' ) );

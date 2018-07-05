@@ -14,8 +14,21 @@ class AlbumsRoute {
     }
 
     private setRouter(): void {
-        this.router.get( '/', this.controller.getAlbums );
-        this.router.post( '/new-album/save', this.controller.createAlbum );
+        this.router.get( '/',  (request, response) => {
+            this.controller.getAlbums(request, response);
+        });
+
+        this.router.get('/:id', (request, response) => {
+            this.controller.getAlbum(request, response);
+        });
+
+        this.router.delete( '/delete/:id', (request, response) => {
+            this.controller.deleteAlbum(request, response);
+        } );
+
+        this.router.post( '/new-album/save', (request, response) => {
+            this.controller.createAlbum( request, response );
+        } );
     }
 }
 

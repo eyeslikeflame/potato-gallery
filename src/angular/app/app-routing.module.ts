@@ -17,6 +17,14 @@ const routes: Routes = [
     },
     {
         path: 'album',
+        redirectTo: 'album/new'
+    },
+    {
+        path: 'album/new',
+        component: PhotosComponent
+    },
+    {
+        path: 'album/:id',
         component: PhotosComponent
     }
 ];
