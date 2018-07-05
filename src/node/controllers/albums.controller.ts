@@ -82,13 +82,13 @@ class AlbumsController {
         });
     }
 
-    private save(files, title) {
-        return Albums.create({
+    private async save(files, title) {
+        return await Albums.create({
             title: title
         }).then( album => {
 
             Photos.insertMany( formatAndSaveFiles( album._id ) ).then(photos => {});
-
+            return album;
         });
 
         function formatAndSaveFiles(id) {
@@ -96,7 +96,7 @@ class AlbumsController {
             for (let i in files) {
                 temp.push({
                     title: files[i].name,
-                    src: files[i].path.match( /[a-z0-9_.]+$/ ),
+                    src: files[i].path.match( /[a-z0-9_.]+$/i ),
                     album: new Types.ObjectId(id)
                 });
             }

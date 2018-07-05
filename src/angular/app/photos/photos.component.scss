@@ -14,7 +14,52 @@
 
 li {
     outline: none;
+    cursor: pointer;
     .mdc-image-list__image-aspect-container {
         cursor: pointer;
+    }
+
+    &.active {
+        position: absolute;
+        z-index: 100;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: rgba(0,0,0,0.2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            position: fixed;
+            box-shadow: 4px 8px 5px 0 rgba(0,0,0,0.1);
+        }
+    }
+}
+
+.img-preload {
+    width: 264px;
+    height: 200px;
+    opacity: 0.5;
+    animation: preload 1500ms infinite ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    i {
+        font-size: 80px;
+    }
+}
+
+@keyframes preload {
+    0% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.5;
     }
 }

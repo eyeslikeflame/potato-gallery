@@ -2,8 +2,7 @@
     <li class="mdc-image-list__item add-button">
 
             <div class="mdc-image-list__image-aspect-container"
-                 [routerLink]="['/album']"
-                 [queryParams]="{'new': true}">
+                 [routerLink]="['/album']">
                 <div class="add-wrap">
                     <i class="material-icons">add</i>
                 </div>
@@ -17,8 +16,7 @@
     <ng-container *ngFor="let album of albums; let i = index;">
         <li class="mdc-image-list__item" *ngIf="album">
             <div class="mdc-image-list__image-aspect-container"
-                    [routerLink]="['/album']"
-                    [queryParams]="{'id': album?._id}">
+                    [routerLink]="['/album', album?._id]">
                 <img class="mdc-image-list__image" src="https://www.placecage.com/c/200/300">
             </div>
             <div class="delete" (click)="deleteAlbum(album?._id, i)">DELETE</div>

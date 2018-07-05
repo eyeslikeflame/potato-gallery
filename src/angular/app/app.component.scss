@@ -9,6 +9,21 @@ header {
     position: sticky;
     background: #ffffff;
     box-shadow: 0 0px 8px 0 rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+
+    .back {
+        cursor: pointer;
+        outline: none;
+        padding: 16px;
+        i {
+            font-size: 36px;
+        }
+    }
+    .title {
+        font-family: 'Roboto Mono', sans-serif;
+        font-size: 24px;
+    }
 }
 
 main {

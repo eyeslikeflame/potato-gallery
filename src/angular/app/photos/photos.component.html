@@ -3,14 +3,18 @@
     <label class="mdc-floating-label" for="my-text-field">Hint text</label>
     <div class="mdc-line-ripple"></div>
 </div>
-<button (click)="save()">
+<button (click)="save()" *ngIf="!loading">
     Save
 </button>
 
 <div class="photos-wrapper">
-    <input type="file" (change)="load($event.target.files)" accept=".jpg,.png" multiple>
-    <ul class="mdc-image-list mdc-image-list--masonry my-masonry-image-list album" *ngIf="album">
-        <li class="mdc-image-list__item" *ngFor="let photo of album.photos">
+    <input type="file" (change)="load($event.target.files)" accept=".jpg,.png" multiple *ngIf="!loading">
+    <ul class="mdc-image-list mdc-image-list--masonry my-masonry-image-list album"
+        *ngIf="album">
+        <li class="mdc-image-list__item"
+            *ngFor="let photo of album.photos; let i = index"
+            (click)="active[i] = !active[i]"
+            [ngClass]="{active: active[i]}">
             <img class="mdc-image-list__image" [src]="photo?.src">
 
             <div class="mdc-image-list__supporting">
@@ -20,8 +24,16 @@
         </li>
     </ul>
     <ul class="mdc-image-list mdc-image-list--masonry my-masonry-image-list album">
-        <li class="mdc-image-list__item" *ngFor="let img of imgArray">
-            <img class="mdc-image-list__image" [src]="img?.src">
+        <li class="mdc-image-list__item"
+            *ngFor="let img of imgArray; let i = index"
+            (click)="active[i] = !active[i]"
+            [ngClass]="{active: active[i]}">
+
+            <div *ngIf="!img.src" class="img-preload">
+                <i class="material-icons">photo_size_select_actual</i>
+            </div>
+
+            <img class="mdc-image-list__image" [src]="img?.src" *ngIf="img?.src">
 
             <div class="mdc-image-list__supporting">
                 <span class="mdc-image-list__label">{{img?.title}}</span>
