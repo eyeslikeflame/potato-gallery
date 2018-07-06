@@ -15,6 +15,8 @@ export class PhotosComponent implements OnInit {
     private files;
     title = '';
     loading = false;
+    loadedPhotos = [];
+    albumId = null;
     constructor( private photosService: PhotosService,
                  private route: ActivatedRoute,
                  private router: Router ) {
@@ -22,7 +24,9 @@ export class PhotosComponent implements OnInit {
 
     ngOnInit() {
         this.route.params.subscribe( params => {
-            if (params.id) {
+            if ( params.id ) {
+                this.albumId = params.id;
+                console.log(this.albumId )
                 this.photosService.getAlbum(params.id).subscribe( album => {
                     this.album = album;
                     this.title = album.title;
@@ -31,16 +35,23 @@ export class PhotosComponent implements OnInit {
         });
     }
 
-    save() {
+    public save() {
         this.loading = true;
         const title = this.title || 'Untitled';
+
+        if (this.albumId) {
+            return this.photosService.saveAlbum( { title: title }, this.files, this.albumId ).subscribe( album => {
+                this.loading = false;
+            });
+        }
+
         this.photosService.saveAlbum( { title: title }, this.files ).subscribe(album => {
             this.loading = false;
-            this.router.navigate(['/album', album.id])
+            this.router.navigate(['/album', album.id]);
         });
     }
 
-    load(files) {
+    public load(files) {
         const _this = this;
         this.files = files;
         this.imgArray = [];
@@ -50,7 +61,6 @@ export class PhotosComponent implements OnInit {
                 src: null,
                 title: files[i].name.replace(/\.[a-zA-Z]+$/, '')
             };
-            console.log(files[i])
             reader.onload = (event: any) => {
                 _this.imgArray[i] = {
                     src: event.target.result,
@@ -60,5 +70,9 @@ export class PhotosComponent implements OnInit {
 
             reader.readAsDataURL(files[i]);
         }
+    }
+
+    public imgLoaded(event, i) {
+        this.imgLoaded[i] = true;
     }
 }

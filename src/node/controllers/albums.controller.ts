@@ -32,6 +32,22 @@ class AlbumsController {
                     foreignField: 'album',
                     as: 'photos'
                 }
+            },
+            {
+                $unwind: '$photos'
+            },
+            {
+                $sort: {
+                    'photos.uploadDate': -1
+                }
+            },
+            {
+                $group: {
+                    _id: '$_id',
+                    'photos': {
+                        $push: '$photos'
+                    }
+                }
             }
         ]).then( album => {
             album[0].photos.map( el => {
@@ -42,19 +58,32 @@ class AlbumsController {
         });
     }
 
-    public async createAlbum( request, response ) {
+    public async saveAlbum( request, response, update = false ) {
         const form = new formidable.IncomingForm();
         form.multiple = true;
         form.hash = 'md5';
         form.keepExtensions = true;
         form.uploadDir = path.join(globalAny.appRoot, '/pictures');
         const parsed = await form.parse(request, (err, fields, files) => {
-            this.save(files, fields.title).then( album => {
-                response.json({
-                    id: album._id,
-                    message: 'Album is successfully created'
+            if (!update) {
+                this.create(files, fields.title).then( album => {
+                    response.json({
+                        id: album._id,
+                        message: 'Album is successfully created'
+                    });
+                }).catch( err => {
+                    response.status(500).json('There was a problem with saving an album');
                 });
-            });
+            } else {
+                this.update(files, fields.title, request.params.id).then( album => {
+                    response.json({
+                        id: album._id,
+                        message: 'Album is successfully saved'
+                    });
+                }).catch( err => {
+                    response.status(500).json('There was a problem with saving an album');
+                });
+            }
         });
 
     }
@@ -82,26 +111,39 @@ class AlbumsController {
         });
     }
 
-    private async save(files, title) {
+    private async create(files, title) {
         return await Albums.create({
             title: title
         }).then( album => {
-
-            Photos.insertMany( formatAndSaveFiles( album._id ) ).then(photos => {});
+            Photos.insertMany( this.formatAndSaveFiles( files, album._id ) ).then(photos => {});
             return album;
         });
+    }
 
-        function formatAndSaveFiles(id) {
-            const temp = [];
-            for (let i in files) {
-                temp.push({
-                    title: files[i].name,
-                    src: files[i].path.match( /[a-z0-9_.]+$/i ),
-                    album: new Types.ObjectId(id)
-                });
-            }
-            return temp;
+    private async update(files, title, id) {
+        return await Albums.findOneAndUpdate({
+            _id: new Types.ObjectId(id)
+        }, {
+            title: title
+        }, {
+            upsert: true, new: true
+        }).then( updated => {
+            Photos.insertMany( this.formatAndSaveFiles( files, updated._id ) ).then(photos => {});
+            return updated;
+        });
+    }
+
+    private formatAndSaveFiles(files, id ) {
+        const temp = [];
+        for (let i in files) {
+            temp.push({
+                title: files[i].name,
+                src: files[i].path.match( /[a-z0-9_.]+$/i ),
+                album: new Types.ObjectId(id),
+                uploadDate: new Date()
+            });
         }
+        return temp;
     }
 }
 
