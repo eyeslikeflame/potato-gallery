@@ -129,29 +129,6 @@ class AlbumsController {
         })
     }
 
-    public async deleteAlbum( request, response ) {
-        Albums.deleteOne( {
-            _id: request.params.id
-        } ).then( deleted => {
-            Photos.find( {
-                album: new Types.ObjectId( request.params.id )
-            } ).then( photos => {
-                photos.map( el => {
-                    fs.unlink( path.join( globalAny.appRoot, '/pictures', el.src ), ( err ) => {
-                        if ( err ) {
-                            response.json( err );
-                        }
-                        console.log( 'deleted' );
-                    } );
-                } );
-                Photos.remove( {
-                    album: new Types.ObjectId( request.params.id )
-                } ).then();
-            } );
-            response.json( deleted );
-        } );
-    }
-
     private async create(files, title) {
         return await Albums.create({
             title: title

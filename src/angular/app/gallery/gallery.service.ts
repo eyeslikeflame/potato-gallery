@@ -10,8 +10,4 @@ export class GalleryService {
     public getAlbums() {
         return this.http.get( '/api/albums' ).pipe( map( res => res.json() ) );
     }
-
-    public deleteAlbum(id) {
-        return this.http.delete( `/api/albums/delete/${id}` ).pipe( map( res => res.json() ) );
-    }
 }

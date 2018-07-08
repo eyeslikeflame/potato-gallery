@@ -1,7 +1,9 @@
 import * as express from 'express';
+
 const globalAny: any = global;
 import * as path from 'path';
 import PhotosController from '../controllers/photos.controller';
+
 // import { Photos } from '../models/photos.model';
 
 class PhotosRoute {
@@ -15,9 +17,14 @@ class PhotosRoute {
     }
 
     private setRouter(): void {
-        this.router.get( '/get-photo/:src', (request, response) => {
-            this.controller.getPhoto(request, response);
+        this.router.get( '/get-photo/:src', ( request, response ) => {
+            this.controller.getPhoto( request, response );
         } );
+
+        this.router.post( '/delete', ( request, response ) => {
+            this.controller.deletePhotos( request, response );
+        } )
+
     }
 }
 

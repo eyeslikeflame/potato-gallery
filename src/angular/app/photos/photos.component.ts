@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router'
 
@@ -11,7 +11,7 @@ import { PhotosService } from './photos.service';
     styleUrls:   [ './photos.component.scss' ],
     providers:   [ PhotosService ]
 } )
-export class PhotosComponent implements OnInit {
+export class PhotosComponent implements OnInit, OnDestroy {
     public imgArray = [];
     active = [];
     public album;
@@ -41,6 +41,10 @@ export class PhotosComponent implements OnInit {
                 });
             }
         });
+    }
+
+    ngOnDestroy() {
+        this.appService.selected = {};
     }
 
     public save() {

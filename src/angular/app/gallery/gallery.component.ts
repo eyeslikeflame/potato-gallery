@@ -27,13 +27,6 @@ export class GalleryComponent implements OnInit, OnDestroy {
         this.appService.selected = {};
     }
 
-    public deleteAlbum(id, index) {
-        this.galleryService.deleteAlbum(id).subscribe( deleted => {
-            this.albums[index] = undefined;
-            console.log(deleted);
-        });
-    }
-
     public selectToggle(index) {
         if (!this.appService.selected[index]) {
             this.appService.selected[index] = this.albums[index]._id;

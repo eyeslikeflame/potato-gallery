@@ -9,13 +9,22 @@ import { AppService } from "./app.service";
     styleUrls:   [ './app.component.scss' ]
 } )
 export class AppComponent {
-    constructor(public router: Router, public appService: AppService) {
+    constructor( public router: Router, public appService: AppService) {
 
     }
 
     public deleteItems() {
-        this.appService.deleteItems().subscribe(deleted => {
-            console.log(deleted);
-        });
+        const path = this.router.url.match(/^\/[a-z]+/)[0];
+        if ( path === '/gallery' ) {
+            this.appService.deleteAlbums().subscribe(deleted => {
+                console.log(deleted);
+            });
+        } else if ( path === '/album' ) {
+            this.appService.deletePhotos().subscribe( deleted => {
+                console.log(deleted);
+            });
+        }
+
+
     }
 }

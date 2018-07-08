@@ -26,28 +26,30 @@
                 <span class="mdc-image-list__label">{{img?.title}}</span>
             </div>
         </li>
+    </ul>
 
+    <ul class="mdc-image-list mdc-image-list--masonry my-masonry-image-list album">
         <ng-container *ngFor="let photo of album?.photos; let i = index">
             <li class="mdc-image-list__item"
                 *ngIf="album"
-                (click)="active[i] = !active[i]"
-                [ngClass]="{active: active[i]}">
-
+                [ngClass]="{'active': active[i], 'selected': appService.selected[i]}">
+                <div class="select">
+                    <i class="material-icons" (click)="appService.selectToggle(i, photo._id)">check_circle</i>
+                </div>
                 <div class="img-preload" *ngIf="!imgLoaded[i]">
                     <i class="material-icons">photo_size_select_actual</i>
                 </div>
 
-                <img class="mdc-image-list__image" [src]="photo?.src" (load)="imgLoaded($event, i)">
+                <img class="mdc-image-list__image"
+                     (click)="active[i] = !active[i]"
+                     [src]="photo?.src"
+                     (load)="imgLoaded($event, i)">
 
-                <div class="mdc-image-list__supporting">
+                <div class="mdc-image-list__supporting" (click)="active[i] = !active[i]">
                     <span class="mdc-image-list__label">{{photo?.title}}</span>
                 </div>
 
             </li>
         </ng-container>
-    </ul>
-
-    <ul class="mdc-image-list mdc-image-list--masonry my-masonry-image-list album">
-
     </ul>
 </div>
