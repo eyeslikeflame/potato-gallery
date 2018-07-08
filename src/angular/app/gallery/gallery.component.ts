@@ -3,36 +3,34 @@ import { Title } from '@angular/platform-browser';
 import { AppService } from "../app.service";
 import { GalleryService } from './gallery.service';
 
-@Component({
-  selector: 'app-gallery',
-  templateUrl: './gallery.component.html',
-  styleUrls: [ './gallery.component.scss' ],
-  providers: [ GalleryService ]
-})
+@Component( {
+    selector:    'app-gallery',
+    templateUrl: './gallery.component.html',
+    styleUrls:   [ './gallery.component.scss' ],
+    providers:   [ GalleryService ]
+} )
 export class GalleryComponent implements OnInit, OnDestroy {
 
     constructor( private galleryService: GalleryService,
-                  private titleService: Title,
-                  public appService: AppService) { }
+                 private titleService: Title,
+                 public appService: AppService ) {
+    }
 
-    public albums = [];
+    public albums;
 
     ngOnInit() {
         this.titleService.setTitle( 'Gallery' );
         this.appService.title = 'Gallery';
-        this.galleryService.getAlbums().subscribe(albums => this.albums = albums);
+        this.galleryService.getAlbums().subscribe( albums => this.albums = albums );
     }
 
     ngOnDestroy() {
         this.appService.selected = {};
     }
 
-    public selectToggle(index) {
-        if (!this.appService.selected[index]) {
-            this.appService.selected[index] = this.albums[index]._id;
-        } else {
-            delete this.appService.selected[index];
-        }
-        this.appService.checkIfSelected();
+    public favorite( id, index ) {
+        this.galleryService.favorite( id ).subscribe( fav => {
+            this.albums[index].favorite = fav;
+        } );
     }
 }

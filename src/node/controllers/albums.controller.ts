@@ -15,7 +15,13 @@ class AlbumsController {
     }
 
     public getAlbums( request, response ) {
-        Albums.find( {} ).then( albums => {
+        Albums.aggregate( [
+            {
+                $sort: {
+                    favorite: -1
+                }
+            }
+        ] ).then( albums => {
             response.json( albums );
         } );
     }
@@ -24,7 +30,7 @@ class AlbumsController {
         Albums.aggregate( [
             {
                 $match: {
-                    _id: new Types.ObjectId(request.params.id)
+                    _id: new Types.ObjectId( request.params.id )
                 }
             },
             {
@@ -45,7 +51,7 @@ class AlbumsController {
             },
             {
                 $group: {
-                    _id: '$_id',
+                    _id:      '$_id',
                     'photos': {
                         $push: '$photos'
                     }
@@ -65,43 +71,43 @@ class AlbumsController {
         form.multiple = true;
         form.hash = 'md5';
         form.keepExtensions = true;
-        form.uploadDir = path.join(globalAny.appRoot, '/pictures');
-        const parsed = await form.parse(request, (err, fields, files) => {
-            if (!update) {
-                this.create(files, fields.title).then( album => {
-                    response.json({
-                        id: album._id,
+        form.uploadDir = path.join( globalAny.appRoot, '/pictures' );
+        const parsed = await form.parse( request, ( err, fields, files ) => {
+            if ( !update ) {
+                this.create( files, fields.title ).then( album => {
+                    response.json( {
+                        id:      album._id,
                         message: 'Album is successfully created'
-                    });
-                }).catch( err => {
-                    response.status(500).json('There was a problem with saving an album');
-                });
+                    } );
+                } ).catch( err => {
+                    response.status( 500 ).json( 'There was a problem with saving an album' );
+                } );
             } else {
-                this.update(files, fields.title, request.params.id).then( album => {
-                    response.json({
-                        id: album._id,
+                this.update( files, fields.title, request.params.id ).then( album => {
+                    response.json( {
+                        id:      album._id,
                         message: 'Album is successfully saved'
-                    });
-                }).catch( err => {
-                    response.status(500).json('There was a problem with saving an album');
-                });
+                    } );
+                } ).catch( err => {
+                    response.status( 500 ).json( 'There was a problem with saving an album' );
+                } );
             }
-        });
+        } );
 
     }
 
     public async deleteAlbums( request, response ) {
-        const albums = Object.values(request.body);
-        Albums.find({
+        const albums = Object.values( request.body );
+        Albums.find( {
             _id: {
                 $in: albums
             }
-        }).then(albums => {
-            Photos.find({
+        } ).then( albums => {
+            Photos.find( {
                 album: {
                     $in: albums
                 }
-            }).then( photos => {
+            } ).then( photos => {
                 photos.map( el => {
                     fs.unlink( path.join( globalAny.appRoot, '/pictures', el.src ), ( err ) => {
                         if ( err ) {
@@ -120,46 +126,66 @@ class AlbumsController {
                         $in: albums
                     }
                 } ).then();
-                response.json({
+                response.json( {
                     success: true,
                     message: `Successfully deleted ${albums.length} album${albums.length > 1 ? 's' : ''}`
-                });
-            })
+                } );
+            } )
 
-        })
+        } )
     }
 
-    private async create(files, title) {
-        return await Albums.create({
+    public favoriteAlbum( request, response ) {
+        Albums.findOne( {
+            _id: request.params.id
+        } ).then( album => {
+            Albums.update( {
+                _id: request.params.id
+            }, {
+                $set: {
+                    favorite: !album.favorite
+                }
+            } ).then( _ => {
+                response.json(!album.favorite)
+            } ).catch( err => {
+                console.log( err );
+            } )
+        } )
+    }
+
+    private async create( files, title ) {
+        return await Albums.create( {
             title: title
-        }).then( album => {
-            Photos.insertMany( this.formatAndSaveFiles( files, album._id ) ).then(photos => {});
+        } ).then( album => {
+            Photos.insertMany( this.formatAndSaveFiles( files, album._id ) ).then( photos => {
+            } );
             return album;
-        });
+        } );
     }
 
-    private async update(files, title, id) {
-        return await Albums.findOneAndUpdate({
-            _id: new Types.ObjectId(id)
+    private async update( files, title, id ) {
+        return await Albums.findOneAndUpdate( {
+            _id: new Types.ObjectId( id )
         }, {
             title: title
         }, {
             upsert: true, new: true
-        }).then( updated => {
-            Photos.insertMany( this.formatAndSaveFiles( files, updated._id ) ).then(photos => {});
+        } ).then( updated => {
+            Photos.insertMany( this.formatAndSaveFiles( files, updated._id ) ).then( photos => {
+            } );
             return updated;
-        });
+        } );
     }
 
-    private formatAndSaveFiles(files, id ) {
+    private formatAndSaveFiles( files, id ) {
         const temp = [];
-        for (let i in files) {
-            temp.push({
-                title: files[i].name,
-                src: files[i].path.match( /[a-z0-9_.]+$/i ),
-                album: new Types.ObjectId(id),
+        for ( let i in files ) {
+            temp.push( {
+                title:      files[ i ].name,
+                src:        files[ i ].path.match( /[a-z0-9_.]+$/i ),
+                album:      new Types.ObjectId( id ),
                 uploadDate: new Date()
-            });
+            } );
         }
         return temp;
     }

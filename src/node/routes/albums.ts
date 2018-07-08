@@ -30,10 +30,13 @@ class AlbumsRoute {
             this.controller.saveAlbum( request, response );
         } );
 
-        this.router.patch( '/update/:id', (request, response) => {
-            console.log('update')
+        this.router.patch( '/update/:id', ( request, response ) => {
             this.controller.saveAlbum( request, response, true );
-        });
+        } );
+
+        this.router.patch( '/favorite/:id', ( request, response ) => {
+            this.controller.favoriteAlbum( request, response );
+        } )
     }
 }
 

@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import { map } from 'rxjs/operators';
+import { HttpClient } from "@angular/common/http";
 
 @Injectable()
 export class GalleryService {
 
-    constructor(private http: Http) { }
+    constructor( private http: HttpClient ) {
+    }
 
     public getAlbums() {
-        return this.http.get( '/api/albums' ).pipe( map( res => res.json() ) );
+        return this.http.get( '/api/albums' );
+    }
+
+    public favorite( id ) {
+        return this.http.patch( `/api/albums/favorite/${id}`, {} );
     }
 }

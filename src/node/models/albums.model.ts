@@ -3,7 +3,7 @@ import { model, Schema } from 'mongoose';
 const albumsSchema: Schema = new Schema( {
     title:    String,
     previews: Array,
-    fav:      Boolean,
+    favorite:      Boolean,
     owner:    {
         type: Schema.Types.ObjectId,
         ref:  'users'

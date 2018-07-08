@@ -23,8 +23,8 @@
             </div>
             <div class="mdc-image-list__supporting">
                 <span class="mdc-image-list__label">{{album?.title}}</span>
-                <span class="favorite">
-                    <i class="material-icons" [ngClass]="{'active': album?.fav}">{{album?.fav ? 'star' : 'star_border'}}</i>
+                <span class="favorite" (click)="favorite(album._id, i)">
+                    <i class="material-icons" [ngClass]="{'active': album?.favorite}">{{album?.favorite ? 'star' : 'star_border'}}</i>
                 </span>
             </div>
         </li>

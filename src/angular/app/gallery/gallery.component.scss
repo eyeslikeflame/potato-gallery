@@ -31,4 +31,7 @@
 .favorite {
     cursor: pointer;
     user-select: none;
+    .active {
+        color: #FF3366;
+    }
 }
