@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router'
+import { MDCTextField } from '@material/textfield';
 
 import { AppService } from "../app.service";
 import { PhotosService } from './photos.service';
@@ -20,6 +21,7 @@ export class PhotosComponent implements OnInit, OnDestroy {
     loading = false;
     loadedPhotos = [];
     albumId = null;
+
     constructor( private photosService: PhotosService,
                  private route: ActivatedRoute,
                  private router: Router,
@@ -30,62 +32,62 @@ export class PhotosComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.titleService.setTitle( 'Album | Gallery' );
         this.appService.title = 'Album';
+        const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
         this.route.params.subscribe( params => {
             if ( params.id ) {
                 this.albumId = params.id;
-                console.log(this.albumId )
-                this.photosService.getAlbum(params.id).subscribe( album => {
+                this.photosService.getAlbum( params.id ).subscribe( album => {
                     this.album = album;
                     this.title = album.title;
-                    this.titleService.setTitle( `${this.title || 'Album'} | Gallery` );
-                });
+                    this.titleService.setTitle( `${album.title || 'Album'} | Gallery` );
+                } );
             }
-        });
+        } );
     }
 
     ngOnDestroy() {
-        this.appService.selected = {};
+        this.appService.clearSelection();
     }
 
     public save() {
         this.loading = true;
         const title = this.title || 'Untitled';
 
-        if (this.albumId) {
+        if ( this.albumId ) {
             return this.photosService.saveAlbum( { title: title }, this.files, this.albumId ).subscribe( album => {
                 this.loading = false;
-            });
+            } );
         }
 
         this.titleService.setTitle( `${this.title || 'Album'} | Gallery` );
-        this.photosService.saveAlbum( { title: title }, this.files ).subscribe(album => {
+        this.photosService.saveAlbum( { title: title }, this.files ).subscribe( album => {
             this.loading = false;
-            this.router.navigate(['/album', album.id]);
-        });
+            this.router.navigate( [ '/album', album.id ] );
+        } );
     }
 
-    public load(files) {
+    public load( files ) {
         const _this = this;
         this.files = files;
         this.imgArray = [];
-        for (let i = 0; i < files.length; i++) {
+        for ( let i = 0; i < files.length; i++ ) {
             const reader = new FileReader();
-            _this.imgArray[i] = {
-                src: null,
-                title: files[i].name.replace(/\.[a-zA-Z]+$/, '')
+            _this.imgArray[ i ] = {
+                src:   null,
+                title: files[ i ].name.replace( /\.[a-zA-Z]+$/, '' )
             };
-            reader.onload = (event: any) => {
-                _this.imgArray[i] = {
-                    src: event.target.result,
-                    title: files[i].name.replace(/\.[a-zA-Z]+$/, '')
+            reader.onload = ( event: any ) => {
+                _this.imgArray[ i ] = {
+                    src:   event.target.result,
+                    title: files[ i ].name.replace( /\.[a-zA-Z]+$/, '' )
                 };
             };
 
-            reader.readAsDataURL(files[i]);
+            reader.readAsDataURL( files[ i ] );
         }
     }
 
-    public imgLoaded(event, i) {
-        this.imgLoaded[i] = true;
+    public imgLoaded( event, i ) {
+        this.imgLoaded[ i ] = true;
     }
 }

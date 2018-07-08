@@ -25,7 +25,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.appService.selected = {};
+        this.appService.clearSelection();
     }
 
     public favorite( id, index ) {

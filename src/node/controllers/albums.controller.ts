@@ -54,6 +54,9 @@ class AlbumsController {
                     _id:      '$_id',
                     'photos': {
                         $push: '$photos'
+                    },
+                    title: {
+                        $first: '$title'
                     }
                 }
             }

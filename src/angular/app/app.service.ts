@@ -24,7 +24,10 @@ export class AppService {
     public deletePhotos() {
         return this.http.post(`/api/photos/delete/`, this.selected);
     }
-
+    public clearSelection() {
+        this.selected = {};
+        this.checkIfSelected();
+    }
     public selectToggle(index, id) {
         if (!this.selected[index]) {
             this.selected[index] = id;
