@@ -9,36 +9,45 @@
 
 <div class="photos-wrapper">
     <input type="file" (change)="load($event.target.files)" accept=".jpg,.png" multiple *ngIf="!loading">
-    <ul class="mdc-image-list mdc-image-list--masonry my-masonry-image-list album"
-        *ngIf="album">
-        <li class="mdc-image-list__item"
-            *ngFor="let photo of album.photos; let i = index"
-            (click)="active[i] = !active[i]"
-            [ngClass]="{active: active[i]}">
-            <img class="mdc-image-list__image" [src]="photo?.src">
-
-            <div class="mdc-image-list__supporting">
-                <span class="mdc-image-list__label">{{photo?.title}}</span>
-            </div>
-
-        </li>
-    </ul>
     <ul class="mdc-image-list mdc-image-list--masonry my-masonry-image-list album">
+
         <li class="mdc-image-list__item"
             *ngFor="let img of imgArray; let i = index"
             (click)="active[i] = !active[i]"
             [ngClass]="{active: active[i]}">
 
-            <div *ngIf="!img.src" class="img-preload">
+            <div *ngIf="!img.src" class="img-preload" >
                 <i class="material-icons">photo_size_select_actual</i>
             </div>
 
-            <img class="mdc-image-list__image" [src]="img?.src" *ngIf="img?.src">
+            <img class="mdc-image-list__image" [src]="img?.src" [ngStyle]="{opacity: img.src ? 1 : 0}">
 
             <div class="mdc-image-list__supporting">
                 <span class="mdc-image-list__label">{{img?.title}}</span>
             </div>
-
         </li>
+
+        <ng-container *ngFor="let photo of album?.photos; let i = index">
+            <li class="mdc-image-list__item"
+                *ngIf="album"
+                (click)="active[i] = !active[i]"
+                [ngClass]="{active: active[i]}">
+
+                <div class="img-preload" *ngIf="!imgLoaded[i]">
+                    <i class="material-icons">photo_size_select_actual</i>
+                </div>
+
+                <img class="mdc-image-list__image" [src]="photo?.src" (load)="imgLoaded($event, i)">
+
+                <div class="mdc-image-list__supporting">
+                    <span class="mdc-image-list__label">{{photo?.title}}</span>
+                </div>
+
+            </li>
+        </ng-container>
+    </ul>
+
+    <ul class="mdc-image-list mdc-image-list--masonry my-masonry-image-list album">
+
     </ul>
 </div>

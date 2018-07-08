@@ -29,8 +29,14 @@ class AlbumsRoute {
             this.controller.deleteAlbums( request, response );
         } );
         this.router.post( '/new-album/save', ( request, response ) => {
-            this.controller.createAlbum( request, response );
+            console.log('save')
+            this.controller.saveAlbum( request, response );
         } );
+
+        this.router.patch( '/update/:id', (request, response) => {
+            console.log('update')
+            this.controller.saveAlbum( request, response, true );
+        });
     }
 }
 

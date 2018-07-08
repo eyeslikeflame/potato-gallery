@@ -18,7 +18,9 @@ li {
     .mdc-image-list__image-aspect-container {
         cursor: pointer;
     }
-
+    .mdc-image-list__image {
+        transition: opacity 200ms;
+    }
     &.active {
         position: fixed;
         z-index: 100;
@@ -33,6 +35,7 @@ li {
 
         img {
             position: fixed;
+            width: 50%;
             box-shadow: 4px 8px 5px 0 rgba(0,0,0,0.1);
         }
     }
@@ -46,8 +49,10 @@ li {
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #ffffff;
 
     i {
+        color: #808080;
         font-size: 80px;
     }
 }
