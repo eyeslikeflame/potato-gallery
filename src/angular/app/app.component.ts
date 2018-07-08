@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { AppService } from "./app.service";
 
 @Component( {
     selector:    'app-root',
@@ -6,5 +9,13 @@ import { Component } from '@angular/core';
     styleUrls:   [ './app.component.scss' ]
 } )
 export class AppComponent {
-    title = 'app';
+    constructor(public router: Router, public appService: AppService) {
+
+    }
+
+    public deleteItems() {
+        this.appService.deleteItems().subscribe(deleted => {
+            console.log(deleted);
+        });
+    }
 }

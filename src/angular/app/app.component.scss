@@ -13,10 +13,15 @@ header {
     align-items: center;
 
     .back {
-        cursor: pointer;
-        outline: none;
-        padding: 16px;
+        padding: 28px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
         i {
+            position: absolute;
+            cursor: pointer;
+            outline: none;
             font-size: 36px;
         }
     }

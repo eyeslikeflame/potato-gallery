@@ -1,12 +1,14 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
-import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
 
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PhotosComponent } from './photos/photos.component';
 import { GalleryComponent } from './gallery/gallery.component';
+import { AppService } from "./app.service";
 
 @NgModule( {
     declarations: [
@@ -16,11 +18,15 @@ import { GalleryComponent } from './gallery/gallery.component';
     ],
     imports:      [
         HttpModule,
+        HttpClientModule,
         BrowserModule,
         AppRoutingModule,
         FormsModule
     ],
-    providers:    [ ],
+    providers:    [
+        AppService,
+        Title
+    ],
     bootstrap:    [ AppComponent ]
 } )
 export class AppModule {

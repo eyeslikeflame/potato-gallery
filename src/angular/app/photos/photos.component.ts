@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router'
+
+import { AppService } from "../app.service";
 import { PhotosService } from './photos.service';
 
 @Component( {
@@ -17,15 +20,20 @@ export class PhotosComponent implements OnInit {
     loading = false;
     constructor( private photosService: PhotosService,
                  private route: ActivatedRoute,
-                 private router: Router ) {
+                 private router: Router,
+                 private titleService: Title,
+                 public appService: AppService ) {
     }
 
     ngOnInit() {
+        this.titleService.setTitle( 'Album | Gallery' );
+        this.appService.title = 'Album';
         this.route.params.subscribe( params => {
             if (params.id) {
                 this.photosService.getAlbum(params.id).subscribe( album => {
                     this.album = album;
                     this.title = album.title;
+                    this.titleService.setTitle( `${this.title || 'Album'} | Gallery` );
                 });
             }
         });
@@ -34,6 +42,7 @@ export class PhotosComponent implements OnInit {
     save() {
         this.loading = true;
         const title = this.title || 'Untitled';
+        this.titleService.setTitle( `${this.title || 'Album'} | Gallery` );
         this.photosService.saveAlbum( { title: title }, this.files ).subscribe(album => {
             this.loading = false;
             this.router.navigate(['/album', album.id])
@@ -50,7 +59,6 @@ export class PhotosComponent implements OnInit {
                 src: null,
                 title: files[i].name.replace(/\.[a-zA-Z]+$/, '')
             };
-            console.log(files[i])
             reader.onload = (event: any) => {
                 _this.imgArray[i] = {
                     src: event.target.result,
