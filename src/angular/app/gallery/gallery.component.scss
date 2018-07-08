@@ -27,7 +27,14 @@
         color: #3126FF;
     }
 }
-
+.empty-album {
+    color: white;
+    position: absolute;
+    padding: 16px;
+    background: black;
+    font-family: 'Roboto Mono', sans-serif;
+    font-size: 24px;
+}
 .favorite {
     cursor: pointer;
     user-select: none;

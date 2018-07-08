@@ -19,7 +19,8 @@
             </div>
             <div class="mdc-image-list__image-aspect-container"
                     [routerLink]="['/album', album?._id]">
-                <img class="mdc-image-list__image" src="https://www.placecage.com/c/200/300">
+                <img class="mdc-image-list__image" [src]="album.preview || '/assets/img/e36.jpg'">
+                <span class="empty-album" *ngIf="!album.preview">This album is empty. Consider adding some pics</span>
             </div>
             <div class="mdc-image-list__supporting">
                 <span class="mdc-image-list__label">{{album?.title}}</span>

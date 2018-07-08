@@ -2,7 +2,10 @@ import { model, Schema } from 'mongoose';
 
 const albumsSchema: Schema = new Schema( {
     title:    String,
-    previews: Array,
+    preview:    {
+        type: Schema.Types.ObjectId,
+        ref:  'photos'
+    },
     favorite:      Boolean,
     owner:    {
         type: Schema.Types.ObjectId,

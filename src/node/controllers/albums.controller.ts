@@ -20,8 +20,35 @@ class AlbumsController {
                 $sort: {
                     favorite: -1
                 }
+            },
+            {
+                $lookup: {
+                    from:         'photos',
+                    localField:   'preview',
+                    foreignField: '_id',
+                    as:           'preview'
+                }
+            },
+            {
+                $project: {
+                    preview:  {
+                        $arrayElemAt: [ '$preview', 0 ]
+                    },
+                    title:    1,
+                    favorite: 1
+                },
+
             }
         ] ).then( albums => {
+            albums.map( el => {
+                if ( el.preview ) {
+                    el.preview = `/api/photos/get-photo/${el.preview.src}`;
+                } else {
+                    el.preview = null;
+                }
+
+                return el;
+            } );
             response.json( albums );
         } );
     }
@@ -43,7 +70,7 @@ class AlbumsController {
             },
             {
                 $unwind: {
-                    'path': '$photos',
+                    'path':                       '$photos',
                     "preserveNullAndEmptyArrays": true
                 }
             },
@@ -165,8 +192,18 @@ class AlbumsController {
         return await Albums.create( {
             title: title
         } ).then( album => {
+            const formatted = this.format( files, album._id );
             if ( files && files[ 0 ] ) {
-                Photos.insertMany( this.formatAndSaveFiles( files, album._id ) ).then( photos => {
+                Photos.insertMany( formatted ).then( photos => {
+                    if ( !album.preview && photos[ 0 ] ) {
+                        Albums.update( {
+                            _id: album._id
+                        }, {
+                            $set: {
+                                preview: photos[ 0 ]._id
+                            }
+                        } ).then()
+                    }
                 } );
             }
             return album;
@@ -182,21 +219,21 @@ class AlbumsController {
             upsert: true, 'new': true
         } ).then( updated => {
             if ( files && files[ 0 ] ) {
-                Photos.insertMany( this.formatAndSaveFiles( files, updated._id ) ).then( photos => {
+                Photos.insertMany( this.format( files, updated._id ) ).then( photos => {
                 } );
             }
             return updated;
         } );
     }
 
-    private formatAndSaveFiles( files, id ) {
+    private format( files, id, ) {
         const temp = [];
         for ( let i in files ) {
             temp.push( {
                 title:      files[ i ].name,
                 src:        files[ i ].path.match( /[a-z0-9_.]+$/i ),
                 album:      new Types.ObjectId( id ),
-                uploadDate: new Date()
+                uploadDate: new Date(),
             } );
         }
         return temp;

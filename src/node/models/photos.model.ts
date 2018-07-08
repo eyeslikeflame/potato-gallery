@@ -6,7 +6,7 @@ const photosSchema: Schema = new Schema( {
     uploadDate: Date,
     album:    {
         type: Schema.Types.ObjectId,
-        ref:  'users'
+        ref:  'album'
     }
 }, { versionKey: false } );
 
