@@ -42,7 +42,10 @@ class AlbumsController {
                 }
             },
             {
-                $unwind: '$photos'
+                $unwind: {
+                    'path': '$photos',
+                    "preserveNullAndEmptyArrays": true
+                }
             },
             {
                 $sort: {
@@ -55,7 +58,7 @@ class AlbumsController {
                     'photos': {
                         $push: '$photos'
                     },
-                    title: {
+                    title:    {
                         $first: '$title'
                     }
                 }
@@ -66,6 +69,8 @@ class AlbumsController {
                 return el;
             } );
             response.json( album[ 0 ] );
+        } ).catch( err => {
+            console.log( err );
         } );
     }
 
@@ -149,7 +154,7 @@ class AlbumsController {
                     favorite: !album.favorite
                 }
             } ).then( _ => {
-                response.json(!album.favorite)
+                response.json( !album.favorite )
             } ).catch( err => {
                 console.log( err );
             } )
@@ -160,8 +165,10 @@ class AlbumsController {
         return await Albums.create( {
             title: title
         } ).then( album => {
-            Photos.insertMany( this.formatAndSaveFiles( files, album._id ) ).then( photos => {
-            } );
+            if ( files && files[ 0 ] ) {
+                Photos.insertMany( this.formatAndSaveFiles( files, album._id ) ).then( photos => {
+                } );
+            }
             return album;
         } );
     }
@@ -172,10 +179,12 @@ class AlbumsController {
         }, {
             title: title
         }, {
-            upsert: true, new: true
+            upsert: true, 'new': true
         } ).then( updated => {
-            Photos.insertMany( this.formatAndSaveFiles( files, updated._id ) ).then( photos => {
-            } );
+            if ( files && files[ 0 ] ) {
+                Photos.insertMany( this.formatAndSaveFiles( files, updated._id ) ).then( photos => {
+                } );
+            }
             return updated;
         } );
     }

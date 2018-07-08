@@ -10,17 +10,20 @@ export class PhotosService {
     constructor( private http: Http ) {
     }
 
-    public getAlbum(id) {
+    public getAlbum( id ) {
         return this.http.get( `/api/albums/${id}` ).pipe( map( res => res.json() ) );
     }
 
     public saveAlbum( body, files, id = null ) {
         const formData: FormData = new FormData();
-        formData.append('title', body.title);
+        formData.append( 'title', body.title );
 
-        for (let i = 0; i < files.length; i++) {
-            formData.append( i.toString(), files[i], files[i]['name']);
+        if ( files && files[ 0 ] ) {
+            for ( let i = 0; i < files.length; i++ ) {
+                formData.append( i.toString(), files[ i ], files[ i ][ 'name' ] );
+            }
         }
+
 
         if ( id ) {
             return this.http.patch( `/api/albums/update/${id}`, formData ).pipe( map( res => res.json() ) );
