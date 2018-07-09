@@ -10,9 +10,6 @@ export class PhotosService {
     constructor( private http: Http ) {
     }
 
-    public getAlbum( id ) {
-        return this.http.get( `/api/albums/${id}` ).pipe( map( res => res.json() ) );
-    }
 
     public saveAlbum( body, files, id = null ) {
         const formData: FormData = new FormData();

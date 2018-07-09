@@ -60,11 +60,8 @@ li {
     outline: none;
     user-select: none;
 
-    img {
+    .mdc-image-list__image-aspect-container, .photo {
         transition: transform 150ms;
-    }
-
-    .mdc-image-list__image-aspect-container {
         cursor: pointer;
     }
 
@@ -83,8 +80,7 @@ li {
                 box-shadow: 0 0 0 4px #f0f0f0;
             }
         }
-
-        img {
+        .mdc-image-list__image-aspect-container, .photo {
             transform: scale(0.87);
         }
 

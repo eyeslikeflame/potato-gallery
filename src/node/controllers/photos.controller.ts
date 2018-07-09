@@ -43,7 +43,7 @@ class PhotosController {
                 success: true,
                 message: `Successfully deleted ${photoArr.length} photo${photoArr.length > 1 ? 's' : ''}`
             });
-        })
+        });
     }
 }
 

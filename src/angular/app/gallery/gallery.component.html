@@ -12,7 +12,7 @@
                 <span class="mdc-image-list__label">New album</span>
             </div>
     </li>
-    <ng-container *ngFor="let album of albums; let i = index;">
+    <ng-container *ngFor="let album of appService.albums; let i = index;">
         <li class="mdc-image-list__item" *ngIf="album" [ngClass]="{'selected': appService.selected[i]}">
             <div class="select">
                 <i class="material-icons" (click)="appService.selectToggle(i, album._id)">check_circle</i>

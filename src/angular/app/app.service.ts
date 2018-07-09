@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
 
 @Injectable( {
     providedIn: 'root'
@@ -10,8 +10,9 @@ export class AppService {
     }
     public selected = {};
     public isSelected = false;
-
     public title = '';
+    public albums;
+    public album;
 
     public checkIfSelected() {
         this.isSelected = Object.keys(this.selected).length > 0;
@@ -24,10 +25,14 @@ export class AppService {
     public deletePhotos() {
         return this.http.post(`/api/photos/delete/`, this.selected);
     }
+
     public clearSelection() {
         this.selected = {};
+        this.album = null;
+        this.albums = null;
         this.checkIfSelected();
     }
+
     public selectToggle(index, id) {
         if (!this.selected[index]) {
             this.selected[index] = id;
@@ -35,5 +40,17 @@ export class AppService {
             delete this.selected[index];
         }
         this.checkIfSelected();
+    }
+
+    public getAlbums() {
+        return this.http.get( '/api/albums' );
+    }
+
+    public getAlbum( id ) {
+        return this.http.get( `/api/albums/${id}` );
+    }
+
+    public favorite( id ) {
+        return this.http.patch( `/api/albums/favorite/${id}`, {} );
     }
 }

@@ -4,7 +4,7 @@ import { Types } from 'mongoose';
 import * as fs from 'fs';
 import * as formidable from 'formidable';
 import * as path from 'path';
-import { photos } from "../routes/photos";
+import { photos } from '../routes/photos';
 
 const globalAny: any = global;
 globalAny.appRoot = process.cwd();
@@ -71,7 +71,7 @@ class AlbumsController {
             {
                 $unwind: {
                     'path':                       '$photos',
-                    "preserveNullAndEmptyArrays": true
+                    'preserveNullAndEmptyArrays': true
                 }
             },
             {
@@ -165,9 +165,9 @@ class AlbumsController {
                     success: true,
                     message: `Successfully deleted ${albums.length} album${albums.length > 1 ? 's' : ''}`
                 } );
-            } )
+            } );
 
-        } )
+        } );
     }
 
     public favoriteAlbum( request, response ) {
@@ -181,11 +181,11 @@ class AlbumsController {
                     favorite: !album.favorite
                 }
             } ).then( _ => {
-                response.json( !album.favorite )
+                response.json( !album.favorite );
             } ).catch( err => {
                 console.log( err );
-            } )
-        } )
+            } );
+        } );
     }
 
     private async create( files, title ) {
@@ -202,7 +202,7 @@ class AlbumsController {
                             $set: {
                                 preview: photos[ 0 ]._id
                             }
-                        } ).then()
+                        } ).then();
                     }
                 } );
             }
@@ -220,6 +220,15 @@ class AlbumsController {
         } ).then( updated => {
             if ( files && files[ 0 ] ) {
                 Photos.insertMany( this.format( files, updated._id ) ).then( photos => {
+                    if ( !updated.preview && photos[ 0 ] ) {
+                        Albums.update( {
+                            _id: updated._id
+                        }, {
+                            $set: {
+                                preview: photos[ 0 ]._id
+                            }
+                        } ).then();
+                    }
                 } );
             }
             return updated;

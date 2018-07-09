@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router';
 import { MDCTextField } from '@material/textfield';
+import { MDCRipple } from '@material/ripple';
 
-import { AppService } from "../app.service";
+import { AppService } from '../app.service';
 import { PhotosService } from './photos.service';
 
 @Component( {
@@ -15,7 +16,6 @@ import { PhotosService } from './photos.service';
 export class PhotosComponent implements OnInit, OnDestroy {
     public imgArray = [];
     active = [];
-    public album;
     private files;
     title = '';
     loading = false;
@@ -33,11 +33,13 @@ export class PhotosComponent implements OnInit, OnDestroy {
         this.titleService.setTitle( 'Album | Gallery' );
         this.appService.title = 'Album';
         const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
+        MDCRipple.attachTo(document.querySelector('.mdc-button'));
+        MDCRipple.attachTo(document.querySelector('label.mdc-button'));
         this.route.params.subscribe( params => {
             if ( params.id ) {
                 this.albumId = params.id;
-                this.photosService.getAlbum( params.id ).subscribe( album => {
-                    this.album = album;
+                this.appService.getAlbum( params.id ).subscribe( ( album: any ) => {
+                    this.appService.album = album;
                     this.title = album.title;
                     this.titleService.setTitle( `${album.title || 'Album'} | Gallery` );
                 } );

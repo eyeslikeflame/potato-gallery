@@ -1,3 +1,5 @@
+@import "@material/icon-button/mdc-icon-button";
+
 :host {
     display: grid;
     grid-template-columns: 1fr;
@@ -12,17 +14,20 @@ header {
     display: flex;
     align-items: center;
 
-    .back {
+    .delete {
+        margin-left: auto;
+    }
+
+    .header-button {
         padding: 28px;
         display: flex;
         justify-content: center;
         align-items: center;
         position: relative;
-        i {
+        button {
             position: absolute;
             cursor: pointer;
             outline: none;
-            font-size: 36px;
         }
     }
     .title {

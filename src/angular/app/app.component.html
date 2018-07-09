@@ -1,13 +1,16 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <header>
-    <span class="back" >
-        <i *ngIf="router.url != '/gallery'" class="material-icons" routerLink="/">arrow_back</i>
+
+    <span class="header-button" >
+        <button *ngIf="router.url != '/gallery'"
+                routerLink="/"
+                class="mdc-icon-button material-icons">arrow_back</button>
     </span>
     <span class="title">
         {{appService.title}}
     </span>
-    <span *ngIf="appService.isSelected" (click)="deleteItems()">
-        <i class="material-icons">delete</i>
+    <span *ngIf="appService.isSelected" class="header-button delete" (click)="deleteItems()">
+        <button class="mdc-icon-button material-icons">delete</button>
     </span>
 </header>
 <main>

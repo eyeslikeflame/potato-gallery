@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { AppService } from "../app.service";
+import { AppService } from '../app.service';
 import { GalleryService } from './gallery.service';
+import { MDCRipple } from '@material/ripple';
 
 @Component( {
     selector:    'app-gallery',
@@ -16,12 +17,10 @@ export class GalleryComponent implements OnInit, OnDestroy {
                  public appService: AppService ) {
     }
 
-    public albums;
-
     ngOnInit() {
         this.titleService.setTitle( 'Gallery' );
         this.appService.title = 'Gallery';
-        this.galleryService.getAlbums().subscribe( albums => this.albums = albums );
+        this.appService.getAlbums().subscribe( albums => this.appService.albums = albums );
     }
 
     ngOnDestroy() {
@@ -29,8 +28,8 @@ export class GalleryComponent implements OnInit, OnDestroy {
     }
 
     public favorite( id, index ) {
-        this.galleryService.favorite( id ).subscribe( fav => {
-            this.albums[index].favorite = fav;
+        this.appService.favorite( id ).subscribe( fav => {
+            this.appService.albums[index].favorite = fav;
         } );
     }
 }

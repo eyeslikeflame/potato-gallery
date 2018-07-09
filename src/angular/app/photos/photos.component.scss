@@ -1,5 +1,6 @@
 @import '@material/textfield/mdc-text-field';
 @import '@material/image-list/mdc-image-list';
+@import "@material/button/mdc-button";
 
 .my-masonry-image-list {
     @include mdc-image-list-masonry-columns(6);
@@ -9,6 +10,20 @@
     }
     @media screen and (max-width: 700px) {
         @include mdc-image-list-masonry-columns(2);
+    }
+}
+
+.manage {
+    display: flex;
+    flex-flow: row wrap;
+    margin-bottom: 32px;
+    .file-input {
+        label {
+            margin-left: 24px;
+        }
+        input {
+            display: none;
+        }
     }
 }
 
