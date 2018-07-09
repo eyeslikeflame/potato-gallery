@@ -1,9 +1,11 @@
+{{showDropOff}}
 <div class="manage">
     <button (click)="save()" class="mdc-button mdc-button--raised">
         Save
     </button>
     <div class="file-input">
-        <label for="file" class="mdc-button mdc-button--outlined">Choose files</label>
+        <label for="file" class="mdc-button mdc-button--outlined" *ngIf="!showDropOff">Choose files</label>
+        <label for="file" class="mdc-button mdc-button--outlined" *ngIf="showDropOff">DROP FILES HERE</label>
         <input type="file" id="file" (change)="load($event.target.files)" accept=".jpg,.png" multiple >
     </div>
     <div class="mdc-text-field mdc-text-field--fullwidth">

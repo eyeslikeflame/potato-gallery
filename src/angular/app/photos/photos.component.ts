@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MDCTextField } from '@material/textfield';
@@ -21,7 +21,31 @@ export class PhotosComponent implements OnInit, OnDestroy {
     loading = false;
     loadedPhotos = [];
     albumId = null;
+    showDropOff = false;
 
+    @HostListener('dragover', ["$event"] )
+    @HostListener('dragenter', ["$event"] )
+    dragover(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.showDropOff = true;
+    }
+
+    @HostListener('dragleave', ["$event"] )
+    @HostListener('dragend', ["$event"] )
+    dragend(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.showDropOff = false;
+    }
+
+    @HostListener('drop', ["$event"] )
+    drop(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const droppedFiles = e.originalEvent.dataTransfer.files;
+        console.log(droppedFiles)
+    }
     constructor( private photosService: PhotosService,
                  private route: ActivatedRoute,
                  private router: Router,
@@ -34,7 +58,6 @@ export class PhotosComponent implements OnInit, OnDestroy {
         this.appService.title = 'Album';
         const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
         MDCRipple.attachTo(document.querySelector('.mdc-button'));
-        MDCRipple.attachTo(document.querySelector('label.mdc-button'));
         this.route.params.subscribe( params => {
             if ( params.id ) {
                 this.albumId = params.id;

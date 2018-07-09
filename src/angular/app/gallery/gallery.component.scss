@@ -1,5 +1,8 @@
 @import '@material/image-list/mdc-image-list';
 
+:host {
+    flex: 1;
+}
 .my-image-list {
     @include mdc-image-list-standard-columns(6);
 
