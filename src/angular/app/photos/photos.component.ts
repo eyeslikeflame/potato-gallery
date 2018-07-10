@@ -22,12 +22,13 @@ export class PhotosComponent implements OnInit, OnDestroy {
     loadedPhotos = [];
     albumId = null;
     showDropOff = false;
+    fileInput: HTMLInputElement;
 
     @HostListener('dragover', ["$event"] )
     @HostListener('dragenter', ["$event"] )
     dragover(e) {
         e.preventDefault();
-        e.stopPropagation();
+        // e.stopPropagation();
         this.showDropOff = true;
     }
 
@@ -35,7 +36,7 @@ export class PhotosComponent implements OnInit, OnDestroy {
     @HostListener('dragend', ["$event"] )
     dragend(e) {
         e.preventDefault();
-        e.stopPropagation();
+        // e.stopPropagation();
         this.showDropOff = false;
     }
 
@@ -43,9 +44,11 @@ export class PhotosComponent implements OnInit, OnDestroy {
     drop(e) {
         e.preventDefault();
         e.stopPropagation();
-        const droppedFiles = e.originalEvent.dataTransfer.files;
-        console.log(droppedFiles)
+        this.showDropOff = false;
+        const droppedFiles = e.dataTransfer.files;
+        this.fileInput.files = droppedFiles;
     }
+
     constructor( private photosService: PhotosService,
                  private route: ActivatedRoute,
                  private router: Router,
@@ -57,6 +60,7 @@ export class PhotosComponent implements OnInit, OnDestroy {
         this.titleService.setTitle( 'Album | Gallery' );
         this.appService.title = 'Album';
         const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
+        this.fileInput = document.querySelector('#file');
         MDCRipple.attachTo(document.querySelector('.mdc-button'));
         this.route.params.subscribe( params => {
             if ( params.id ) {
@@ -106,6 +110,7 @@ export class PhotosComponent implements OnInit, OnDestroy {
                     src:   event.target.result,
                     title: files[ i ].name.replace( /\.[a-zA-Z]+$/, '' )
                 };
+                console.log(_this.imgArray)
             };
 
             reader.readAsDataURL( files[ i ] );

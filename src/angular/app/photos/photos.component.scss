@@ -3,7 +3,7 @@
 @import "@material/button/mdc-button";
 
 :host {
-    flex: 1;
+    flex: 1;position: relative;
 }
 .my-masonry-image-list {
     @include mdc-image-list-masonry-columns(6);
@@ -28,8 +28,17 @@
             display: none;
         }
     }
-}
 
+}
+.drop-here {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    top: 20px;
+    z-index: 999;
+    background-color: blue;
+}
 li {
     outline: none;
     cursor: pointer;

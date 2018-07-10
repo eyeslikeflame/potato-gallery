@@ -9,12 +9,14 @@ import { AppComponent } from './app.component';
 import { PhotosComponent } from './photos/photos.component';
 import { GalleryComponent } from './gallery/gallery.component';
 import { AppService } from "./app.service";
+import { SafeHtmlPipe } from './safe-html.pipe';
 
 @NgModule( {
     declarations: [
         AppComponent,
         PhotosComponent,
-        GalleryComponent
+        GalleryComponent,
+        SafeHtmlPipe
     ],
     imports:      [
         HttpModule,
