@@ -18,9 +18,10 @@ export class GalleryComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.titleService.setTitle( 'Gallery' );
+        this.titleService.setTitle( '🥔 Gallery' );
         this.appService.title = 'Gallery';
         this.appService.getAlbums().subscribe( albums => this.appService.albums = albums );
+        const fabRipple = new MDCRipple(document.querySelector('.mdc-fab'));
     }
 
     ngOnDestroy() {

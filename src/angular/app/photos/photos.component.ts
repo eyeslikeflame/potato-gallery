@@ -22,21 +22,21 @@ export class PhotosComponent implements OnInit, OnDestroy {
     loadedPhotos = [];
     albumId = null;
     showDropOff = false;
-    fileInput: HTMLInputElement;
+    fileInput: any;
 
     @HostListener('dragover', ["$event"] )
     @HostListener('dragenter', ["$event"] )
     dragover(e) {
         e.preventDefault();
-        // e.stopPropagation();
+        e.stopPropagation();
         this.showDropOff = true;
     }
 
-    @HostListener('dragleave', ["$event"] )
-    @HostListener('dragend', ["$event"] )
+    // @HostListener('dragleave', ["$event"] )
+    // @HostListener('dragend', ["$event"] )
     dragend(e) {
         e.preventDefault();
-        // e.stopPropagation();
+        e.stopPropagation();
         this.showDropOff = false;
     }
 
@@ -57,7 +57,7 @@ export class PhotosComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.titleService.setTitle( 'Album | Gallery' );
+        this.titleService.setTitle( '🥔 Album | Gallery' );
         this.appService.title = 'Album';
         const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
         this.fileInput = document.querySelector('#file');

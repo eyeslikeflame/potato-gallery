@@ -30,6 +30,7 @@
     }
 
 }
+
 .drop-here {
     position: absolute;
     left: 20px;
@@ -37,8 +38,28 @@
     bottom: 20px;
     top: 20px;
     z-index: 999;
-    background-color: blue;
+    background: rgba(49, 38, 255, 0.25);
+    border-radius: 16px;
+
+    .txt {
+        font-family: Roboto Mono;
+        font-style: normal;
+        font-weight: bold;
+        line-height: normal;
+        font-size: 40px;
+        text-align: center;
+        width: 100%;
+        position: absolute;
+        top: 16.5rem;
+        height: 9rem;
+        background: #6200EE;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #ffffff;
+    }
 }
+
 li {
     outline: none;
     cursor: pointer;

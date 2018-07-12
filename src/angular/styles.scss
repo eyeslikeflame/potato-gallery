@@ -3,6 +3,7 @@
    v2.0 | 20110126
    License: none (public domain)
 */
+@import "@material/fab/mdc-fab";
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -86,6 +87,7 @@ li {
 
     }
 }
+
 .select {
     position: absolute;
     z-index: 10;
@@ -104,5 +106,44 @@ li {
 
     i:hover {
         color: rgba(255,255,255, 1);
+    }
+}
+
+.mdc-fab {
+    @include mdc-fab-container-color(#3126FF);
+    transition: 300ms !important;
+    transform: translateY(0);
+    &.upload {
+        transform: translateY(-200%);
+        animation: fab-drop 2000ms infinite ease;
+        animation-delay: 300ms;
+        overflow: visible;
+        @include mdc-fab-container-color(#6200EE);
+        &::before {
+            position: absolute;
+            background: #6200EE;
+            animation: fab-waves 1000ms infinite ease; 
+            z-index: -1;
+        }
+    }
+}
+
+@keyframes fab-drop {
+    0% {
+        transform: translateY(-200%);
+    } 50% {
+        transform: translateY(-220%);
+    } 100% {
+        transform: translateY(-200%);
+    }
+}
+
+@keyframes fab-waves {
+    from {
+        transform: scale(0);
+        opacity: 0.8;
+    } to {
+        transform: scale(1.4);
+        opacity: 0;
     }
 }

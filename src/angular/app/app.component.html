@@ -5,6 +5,7 @@
         <button *ngIf="router.url != '/gallery'"
                 routerLink="/"
                 class="mdc-icon-button material-icons">arrow_back</button>
+        <span *ngIf="router.url === '/gallery'" class="potato">🥔</span>
     </span>
     <span class="title">
         {{appService.title}}

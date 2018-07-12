@@ -1,17 +1,4 @@
 <ul class="mdc-image-list my-image-list album">
-    <li class="mdc-image-list__item add-button">
-
-            <div class="mdc-image-list__image-aspect-container"
-                 [routerLink]="['/album']">
-                <div class="add-wrap">
-                    <i class="material-icons">add</i>
-                </div>
-            </div>
-
-            <div class="mdc-image-list__supporting">
-                <span class="mdc-image-list__label">New album</span>
-            </div>
-    </li>
     <ng-container *ngFor="let album of appService.albums; let i = index;">
         <li class="mdc-image-list__item" *ngIf="album" [ngClass]="{'selected': appService.selected[i]}">
             <div class="select">
@@ -31,3 +18,7 @@
         </li>
     </ng-container>
 </ul>
+
+<button class="mdc-fab app-fab--absolute" [routerLink]="['/album']" aria-label="Add album">
+    <span class="mdc-fab__icon material-icons">add</span>
+</button>
