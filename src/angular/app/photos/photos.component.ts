@@ -75,7 +75,32 @@ export class PhotosComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.appService.clearSelection();
+        this.appService.removeData();
+    }
+
+    public photoClick( index, id? ) {
+        if ( !this.appService.selected[ index ] ) {
+            this.active[ index ] = true;
+        } else {
+            console.log(this.appService.selected)
+            this.appService.selectToggle( index, id );
+
+        }
+    }
+
+    public fabAction() {
+        if (this.appService.isSelected) {
+            this.appService.deletePhotos().subscribe( deleted => {
+
+                for (let i = 0; i < this.appService.album.photos.length; i++) {
+                    if ( this.appService.selected[i] ) {
+                        delete this.appService.album.photos[i];
+                    }
+                }
+                console.log(this.appService.selected)
+            });
+            this.appService.clearSelection();
+        }
     }
 
     public save() {

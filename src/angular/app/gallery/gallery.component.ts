@@ -27,7 +27,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.appService.clearSelection();
+        this.appService.removeData();
     }
 
     public albumClick( index, id ) {

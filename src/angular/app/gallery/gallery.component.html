@@ -6,7 +6,8 @@
             </div>
             <div class="mdc-image-list__image-aspect-container"
                  (click)="albumClick(i, album?._id)">
-                <img class="mdc-image-list__image" [src]="album.preview || '/assets/img/e36.jpg'">
+                <!--<img class="mdc-image-list__image" [src]="album.preview || '/assets/img/e36.jpg'">-->
+                <div class="mdc-image-list__image" [ngStyle]="{'background-image': 'url(' + album.preview + ')'}"></div>
                 <span class="empty-album" *ngIf="!album.preview">This album is empty. Consider adding some pics</span>
             </div>
             <div class="mdc-image-list__supporting">
@@ -21,8 +22,7 @@
 
 <button class="mdc-fab app-fab--absolute"
         [ngClass]="{'fab-indigo': appService.isSelected}"
-        (click)="fabAction()"
-        aria-label="Add album">
+        (click)="fabAction()">
     <span class="mdc-fab__icon material-icons" *ngIf="!appService.isSelected">add</span>
     <span class="mdc-fab__icon material-icons" *ngIf="appService.isSelected">delete</span>
 </button>

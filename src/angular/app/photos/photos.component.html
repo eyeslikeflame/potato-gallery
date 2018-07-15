@@ -27,14 +27,14 @@
 
         <li class="mdc-image-list__item"
             *ngFor="let img of imgArray; let i = index"
-            (click)="active[i] = !active[i]"
+
             [ngClass]="{active: active[i]}">
 
             <div *ngIf="!img.src" class="img-preload">
                 <i class="material-icons">photo_size_select_actual</i>
             </div>
 
-            <div class="photo">
+            <div class="photo" (click)="photoClick(i)">
                 <img class="mdc-image-list__image" [src]="img?.src" [ngStyle]="{opacity: img.src ? 1 : 0}">
             </div>
 
@@ -56,15 +56,14 @@
                     <i class="material-icons">photo_size_select_actual</i>
                 </div>
 
-                <div class="photo">
+                <div class="photo" (click)="photoClick(i, photo?._id)">
                     <img class="mdc-image-list__image"
-                         (click)="active[i] = !active[i]"
                          [src]="photo?.src"
                          (load)="imgLoaded($event, i)">
                 </div>
 
 
-                <div class="mdc-image-list__supporting" (click)="active[i] = !active[i]">
+                <div class="mdc-image-list__supporting">
                     <span class="mdc-image-list__label">{{photo?.title}}</span>
                 </div>
 
@@ -73,7 +72,13 @@
     </ul>
 </div>
 
-<button class="mdc-fab app-fab--absolute" [ngClass]="{'upload': showDropOff}" aria-label="Favorite">
-    <label class="mdc-fab__icon material-icons" for="file" *ngIf="!showDropOff">add</label>
+<button class="mdc-fab app-fab--absolute"
+        (click)="fabAction()"
+        [ngClass]="{'upload': showDropOff, 'fab-indigo': appService.isSelected || showDropOff}">
+
+    <label class="mdc-fab__icon material-icons"
+           for="file"
+           *ngIf="!showDropOff && !appService.isSelected">add</label>
+    <span class="mdc-fab__icon material-icons" *ngIf="appService.isSelected">delete</span>
     <span class="mdc-fab__icon material-icons" *ngIf="showDropOff">arrow_upward</span>
 </button>

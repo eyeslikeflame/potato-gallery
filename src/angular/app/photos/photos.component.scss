@@ -74,6 +74,9 @@ li {
 
     .mdc-image-list__image {
         transition: opacity 200ms;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: fixed;
     }
     &.active {
         position: fixed;

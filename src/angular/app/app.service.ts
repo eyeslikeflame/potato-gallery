@@ -29,9 +29,13 @@ export class AppService {
 
     public clearSelection() {
         this.selected = {};
+        this.checkIfSelected();
+    }
+
+    public removeData() {
         this.album = null;
         this.albums = null;
-        this.checkIfSelected();
+        this.clearSelection()
     }
 
     public selectToggle( index, id ) {
