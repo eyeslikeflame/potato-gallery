@@ -76,6 +76,13 @@ html {
     &.fab-indigo {
         @include mdc-fab-container-color(#6200EE);
     }
+    label.mdc-fab__icon {
+        width: 100%;
+        cursor: pointer;
+        height: 100%;
+        position: absolute;
+        border-radius: 50%;
+    }
 }
 
 @keyframes fab-drop {

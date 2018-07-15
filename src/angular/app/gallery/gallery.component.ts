@@ -47,12 +47,14 @@ export class GalleryComponent implements OnInit, OnDestroy {
     public fabAction() {
         if ( this.appService.isSelected ) {
             this.appService.deleteAlbums().subscribe( deleted => {
+
                 this.appService.albums = this.appService.albums.map( ( el, i ) => {
                     if ( this.appService.selected[ i ] ) {
                         return null;
                     }
                     return el;
                 } );
+                this.appService.clearSelection();
             } );
         } else {
             this.router.navigate( [ '/album' ] );

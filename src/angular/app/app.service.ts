@@ -6,8 +6,9 @@ import { HttpClient } from '@angular/common/http';
 } )
 export class AppService {
 
-    constructor(private http: HttpClient) {
+    constructor( private http: HttpClient ) {
     }
+
     public selected = {};
     public isSelected = 0;
     public title = '';
@@ -15,15 +16,15 @@ export class AppService {
     public album;
 
     public checkIfSelected() {
-        this.isSelected = Object.keys(this.selected).length;
+        this.isSelected = Object.keys( this.selected ).length;
     }
 
     public deleteAlbums() {
-        return this.http.post(`/api/albums/delete/`, this.selected);
+        return this.http.post( `/api/albums/delete/`, this.selected );
     }
 
     public deletePhotos() {
-        return this.http.post(`/api/photos/delete/`, this.selected);
+        return this.http.post( `/api/photos/delete/`, this.selected );
     }
 
     public clearSelection() {
@@ -33,11 +34,11 @@ export class AppService {
         this.checkIfSelected();
     }
 
-    public selectToggle(index, id) {
-        if (!this.selected[index]) {
-            this.selected[index] = id;
+    public selectToggle( index, id ) {
+        if ( !this.selected[ index ] ) {
+            this.selected[ index ] = id;
         } else {
-            delete this.selected[index];
+            delete this.selected[ index ];
         }
         this.checkIfSelected();
     }

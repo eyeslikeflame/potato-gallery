@@ -7,7 +7,7 @@
     position: relative;
 }
 
-.my-masonry-image-list {
+.photos-list {
     @include mdc-image-list-masonry-columns(8);
 
     @media screen and (max-width: 1280px) {
