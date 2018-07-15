@@ -24,9 +24,9 @@ export class PhotosComponent implements OnInit, OnDestroy {
     showDropOff = false;
     fileInput: any;
 
-    @HostListener('dragover', ["$event"] )
-    @HostListener('dragenter', ["$event"] )
-    dragover(e) {
+    @HostListener( 'dragover', [ "$event" ] )
+    @HostListener( 'dragenter', [ "$event" ] )
+    dragover( e ) {
         e.preventDefault();
         e.stopPropagation();
         this.showDropOff = true;
@@ -34,14 +34,14 @@ export class PhotosComponent implements OnInit, OnDestroy {
 
     // @HostListener('dragleave', ["$event"] )
     // @HostListener('dragend', ["$event"] )
-    dragend(e) {
+    dragend( e ) {
         e.preventDefault();
         e.stopPropagation();
         this.showDropOff = false;
     }
 
-    @HostListener('drop', ["$event"] )
-    drop(e) {
+    @HostListener( 'drop', [ "$event" ] )
+    drop( e ) {
         e.preventDefault();
         e.stopPropagation();
         this.showDropOff = false;
@@ -59,9 +59,9 @@ export class PhotosComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.titleService.setTitle( '🥔 Album | Gallery' );
         this.appService.title = 'Album';
-        const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
-        this.fileInput = document.querySelector('#file');
-        MDCRipple.attachTo(document.querySelector('.mdc-button'));
+        const textField = new MDCTextField( document.querySelector( '.mdc-text-field' ) );
+        this.fileInput = document.querySelector( '#file' );
+        MDCRipple.attachTo( document.querySelector( '.mdc-button' ) );
         this.route.params.subscribe( params => {
             if ( params.id ) {
                 this.albumId = params.id;
@@ -110,7 +110,7 @@ export class PhotosComponent implements OnInit, OnDestroy {
                     src:   event.target.result,
                     title: files[ i ].name.replace( /\.[a-zA-Z]+$/, '' )
                 };
-                console.log(_this.imgArray)
+                console.log( _this.imgArray )
             };
 
             reader.readAsDataURL( files[ i ] );

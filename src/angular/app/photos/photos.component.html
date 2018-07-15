@@ -10,7 +10,7 @@
         Save
     </button>
     <div class="file-input">
-        <input type="file" id="file" (change)="load($event.target.files)" accept=".jpg,.png" multiple >
+        <input type="file" id="file" (change)="load($event.target.files)" accept=".jpg,.png" multiple>
     </div>
     <div class="mdc-text-field mdc-text-field--fullwidth">
         <input class="mdc-text-field__input"
@@ -30,7 +30,7 @@
             (click)="active[i] = !active[i]"
             [ngClass]="{active: active[i]}">
 
-            <div *ngIf="!img.src" class="img-preload" >
+            <div *ngIf="!img.src" class="img-preload">
                 <i class="material-icons">photo_size_select_actual</i>
             </div>
 

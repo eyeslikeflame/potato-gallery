@@ -66,13 +66,15 @@ html {
         animation: fab-drop 2000ms infinite ease;
         animation-delay: 300ms;
         overflow: visible;
-        @include mdc-fab-container-color(#6200EE);
         &::before {
             position: absolute;
             background: #6200EE;
-            animation: fab-waves 1000ms infinite ease; 
+            animation: fab-waves 1000ms infinite ease;
             z-index: -1;
         }
+    }
+    &.fab-indigo {
+        @include mdc-fab-container-color(#6200EE);
     }
 }
 

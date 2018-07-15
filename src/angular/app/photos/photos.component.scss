@@ -1,10 +1,12 @@
-@import '@material/textfield/mdc-text-field';
-@import '@material/image-list/mdc-image-list';
-@import "@material/button/mdc-button";
+@import '~@material/textfield/mdc-text-field';
+@import '~@material/image-list/mdc-image-list';
+@import '~@material/button/mdc-button';
 
 :host {
-    flex: 1;position: relative;
+    flex: 1;
+    position: relative;
 }
+
 .my-masonry-image-list {
     @include mdc-image-list-masonry-columns(8);
 
@@ -69,7 +71,7 @@ li {
     .mdc-image-list__image-aspect-container {
         cursor: pointer;
     }
-    
+
     .mdc-image-list__image {
         transition: opacity 200ms;
     }
@@ -80,7 +82,7 @@ li {
         left: 0;
         bottom: 0;
         right: 0;
-        background: rgba(0,0,0,1);
+        background: rgba(0, 0, 0, 1);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -88,7 +90,7 @@ li {
         img {
             position: fixed;
             width: 50%;
-            box-shadow: 4px 8px 4px 0 rgba(0,0,0,0.1);
+            box-shadow: 4px 8px 4px 0 rgba(0, 0, 0, 0.1);
         }
     }
 }

@@ -6,6 +6,4 @@ export class GalleryService {
 
     constructor( private http: HttpClient ) {
     }
-
-
 }

@@ -9,13 +9,13 @@ export class AppService {
     constructor(private http: HttpClient) {
     }
     public selected = {};
-    public isSelected = false;
+    public isSelected = 0;
     public title = '';
     public albums;
     public album;
 
     public checkIfSelected() {
-        this.isSelected = Object.keys(this.selected).length > 0;
+        this.isSelected = Object.keys(this.selected).length;
     }
 
     public deleteAlbums() {

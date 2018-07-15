@@ -1,4 +1,4 @@
-@import '@material/image-list/mdc-image-list';
+@import '~@material/image-list/mdc-image-list';
 @import '../../styles/vars';
 
 :host {
@@ -19,13 +19,6 @@
         @include mdc-image-list-corner-radius(0.5rem);
         margin: 1rem;
     }
-
-    // .mdc-image-list__image-aspect-container {
-    //     &::before {
-    //         content: '';
-    //         background: url('/assets/img/check.svg');
-    //     }
-    // }
     column-gap: 2rem;
 }
 
