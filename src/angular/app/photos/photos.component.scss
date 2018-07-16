@@ -1,7 +1,7 @@
 @import '~@material/textfield/mdc-text-field';
 @import '~@material/image-list/mdc-image-list';
 @import '~@material/button/mdc-button';
-
+@import "~@material/icon-button/mdc-icon-button";
 :host {
     flex: 1;
     position: relative;
@@ -59,7 +59,6 @@
         position: absolute;
         top: 16.5rem;
         height: 9rem;
-        // background: #6200EE;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -81,23 +80,44 @@ li {
         background-position: center;
         background-attachment: fixed;
     }
-    &.active {
+}
+
+.full-size {
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .header-clone {
         position: fixed;
-        z-index: 100;
         top: 0;
         left: 0;
-        bottom: 0;
         right: 0;
-        background: rgba(0, 0, 0, 1);
+        height: 4rem;
         display: flex;
-        justify-content: center;
         align-items: center;
-
-        img {
-            position: fixed;
-            width: 50%;
-            box-shadow: 4px 8px 4px 0 rgba(0, 0, 0, 0.1);
+        padding: 0 2rem;
+        
+        .title {
+            color: #ffffff;
         }
+
+        button {
+            color: white;
+        }
+    }
+
+
+    img {
+        position: fixed;
+        max-width: 100%;
+        max-height: 100%;
     }
 }
 

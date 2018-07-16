@@ -6,6 +6,16 @@
     </div>
 </div>
 
+<div class="full-size" *ngIf="fullSize.src">
+    <div class="header-clone">
+        <button class="mdc-icon-button material-icons"
+                (click)="fullSize = {}">arrow_back</button>
+        <div class="title">{{fullSize.title}}</div>
+    </div>
+    
+    <img [src]="fullSize.src" alt="">
+</div>
+
 <div class="manage">
     <button (click)="save()" class="mdc-button mdc-button--raised">
         Save
@@ -56,7 +66,7 @@
                     <i class="material-icons">photo_size_select_actual</i>
                 </div>
 
-                <div class="photo" (click)="photoClick(i, photo?._id)">
+                <div class="photo" (click)="photoClick(i, photo)">
                     <img class="mdc-image-list__image"
                          [src]="photo?.src"
                          (load)="imgLoaded($event, i)">

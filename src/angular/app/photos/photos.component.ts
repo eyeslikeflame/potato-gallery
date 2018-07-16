@@ -23,6 +23,7 @@ export class PhotosComponent implements OnInit, OnDestroy {
     albumId = null;
     showDropOff = false;
     fileInput: any;
+    fullSize = {};
 
     @HostListener( 'dragover', [ "$event" ] )
     @HostListener( 'dragenter', [ "$event" ] )
@@ -78,12 +79,13 @@ export class PhotosComponent implements OnInit, OnDestroy {
         this.appService.removeData();
     }
 
-    public photoClick( index, id? ) {
+    public photoClick( index, photo? ) {
         if ( !this.appService.isSelected ) {
+            this.fullSize = photo;
             // todo uncomment when photo fullview is remade
             // this.active[ index ] = true;
         } else {
-            this.appService.selectToggle( index, id );
+            this.appService.selectToggle( index, photo._id );
 
         }
     }
