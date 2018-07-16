@@ -17,6 +17,9 @@
         @include mdc-image-list-masonry-columns(2);
     }
 
+    .mdc-image-list__item {
+        @include mdc-image-list-corner-radius(0.5rem);
+    }
     column-gap: 2rem;
 }
 
@@ -37,12 +40,12 @@
 
 .drop-here {
     position: absolute;
-    left: 20px;
-    right: 20px;
-    bottom: 20px;
-    top: 20px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
     z-index: 999;
-    background: rgba(49, 38, 255, 0.25);
+    background: rgba(49, 38, 255, 0.5);
     border-radius: 1rem;
 
     .txt {
@@ -56,7 +59,7 @@
         position: absolute;
         top: 16.5rem;
         height: 9rem;
-        background: #6200EE;
+        // background: #6200EE;
         display: flex;
         justify-content: center;
         align-items: center;

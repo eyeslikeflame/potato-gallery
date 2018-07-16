@@ -79,10 +79,10 @@ export class PhotosComponent implements OnInit, OnDestroy {
     }
 
     public photoClick( index, id? ) {
-        if ( !this.appService.selected[ index ] ) {
-            this.active[ index ] = true;
+        if ( !this.appService.isSelected ) {
+            // todo uncomment when photo fullview is remade
+            // this.active[ index ] = true;
         } else {
-            console.log(this.appService.selected)
             this.appService.selectToggle( index, id );
 
         }
@@ -91,15 +91,14 @@ export class PhotosComponent implements OnInit, OnDestroy {
     public fabAction() {
         if (this.appService.isSelected) {
             this.appService.deletePhotos().subscribe( deleted => {
-
                 for (let i = 0; i < this.appService.album.photos.length; i++) {
                     if ( this.appService.selected[i] ) {
                         delete this.appService.album.photos[i];
                     }
                 }
-                console.log(this.appService.selected)
+                this.appService.clearSelection();
             });
-            this.appService.clearSelection();
+           
         }
     }
 

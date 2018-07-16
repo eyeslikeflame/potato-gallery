@@ -1,15 +1,20 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <header [ngClass]="{'indigo': appService.isSelected}">
 
-    <div class="header-button" *ngIf="!appService.isSelected">
-        <button *ngIf="router.url != '/gallery'"
+    <div class="header-button">
+        <button *ngIf="router.url !== '/gallery' && !appService.isSelected"
                 routerLink="/"
                 class="mdc-icon-button material-icons">arrow_back
         </button>
-        <div *ngIf="router.url === '/gallery'" class="potato">🥔</div>
+        <button *ngIf="appService.isSelected"
+                class="mdc-icon-button material-icons"
+                (click)="appService.clearSelection()">close
+        </button>
+
+        <div *ngIf="router.url === '/gallery' && !appService.isSelected" class="potato">🥔</div>
     </div>
     <span class="title">
-        <span >{{appService.isSelected ? 'Selected: ' : appService.title }}</span>
+        <span>{{appService.isSelected ? 'Selected: ' : appService.title }}</span>
         <span *ngIf="appService.isSelected">{{appService.isSelected}}</span>
     </span>
 </header>

@@ -39,6 +39,7 @@
         outline: none;
         user-select: none;
         transition: transform 150ms;
+        transform-origin: 50% 40px;
         .mdc-image-list__image-aspect-container, .photo {
             cursor: pointer;
 
