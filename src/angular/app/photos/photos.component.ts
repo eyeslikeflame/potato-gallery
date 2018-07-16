@@ -46,8 +46,21 @@ export class PhotosComponent implements OnInit, OnDestroy {
         e.preventDefault();
         e.stopPropagation();
         this.showDropOff = false;
-        const droppedFiles = e.dataTransfer.files;
+        const droppedFiles = e.dataTransfer.files || e.target.files;
+        console.log(this.checkForType(droppedFiles), droppedFiles)
         this.fileInput.files = droppedFiles;
+    }
+
+    private checkForType( fileList ) {
+        const filteredList = {};
+        let i = 0;
+        for ( let key in fileList ) {
+            if ( fileList[key].type !== 'image/jpeg' ) {
+                delete fileList[key];
+                i++;
+            }
+        }
+        return fileList;
     }
 
     constructor( private photosService: PhotosService,
