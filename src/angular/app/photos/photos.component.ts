@@ -47,20 +47,32 @@ export class PhotosComponent implements OnInit, OnDestroy {
         e.stopPropagation();
         this.showDropOff = false;
         const droppedFiles = e.dataTransfer.files || e.target.files;
-        console.log(this.checkForType(droppedFiles), droppedFiles)
+        const validate = this.validateFiles( droppedFiles );
+        if ( !validate.valid ) {
+            alert( validate.message );
+            return false;
+        }
         this.fileInput.files = droppedFiles;
     }
 
-    private checkForType( fileList ) {
-        const filteredList = {};
-        let i = 0;
-        for ( let key in fileList ) {
-            if ( fileList[key].type !== 'image/jpeg' ) {
-                delete fileList[key];
-                i++;
+    private validateFiles( fileList: FileList ) {
+        let status = {
+            valid: true,
+            message: ''
+        };
+        for ( let i = 0; i < fileList.length; i++ ) {
+            if ( fileList[i].type !== 'image/jpeg' ) {
+                status.valid = false;
+                status.message = 'JPEG format only is allowed';
+                break;
+            }
+            if ( fileList[i].size > 5000000) {
+                status.valid = false;
+                status.message = '5 MB is the max size for each file';
+                break;
             }
         }
-        return fileList;
+        return status;
     }
 
     constructor( private photosService: PhotosService,
@@ -95,8 +107,6 @@ export class PhotosComponent implements OnInit, OnDestroy {
     public photoClick( index, photo? ) {
         if ( !this.appService.isSelected ) {
             this.fullSize = photo;
-            // todo uncomment when photo fullview is remade
-            // this.active[ index ] = true;
         } else {
             this.appService.selectToggle( index, photo._id );
 
@@ -104,7 +114,7 @@ export class PhotosComponent implements OnInit, OnDestroy {
     }
 
     public fabAction() {
-        if (this.appService.isSelected) {
+        if ( this.appService.isSelected ) {
             this.appService.deletePhotos().subscribe( deleted => {
                 for (let i = 0; i < this.appService.album.photos.length; i++) {
                     if ( this.appService.selected[i] ) {
@@ -114,6 +124,9 @@ export class PhotosComponent implements OnInit, OnDestroy {
                 this.appService.clearSelection();
             });
            
+        } else {
+            const input: HTMLInputElement = document.querySelector('#file');
+            input.focus();
         }
     }
 
@@ -138,6 +151,11 @@ export class PhotosComponent implements OnInit, OnDestroy {
         const _this = this;
         this.files = files;
         this.imgArray = [];
+        const validate = this.validateFiles( files );
+        if ( !validate.valid ) {
+            alert(validate.message)
+            return false;
+        }
         for ( let i = 0; i < files.length; i++ ) {
             const reader = new FileReader();
             _this.imgArray[ i ] = {
@@ -149,7 +167,6 @@ export class PhotosComponent implements OnInit, OnDestroy {
                     src:   event.target.result,
                     title: files[ i ].name.replace( /\.[a-zA-Z]+$/, '' )
                 };
-                console.log( _this.imgArray )
             };
 
             reader.readAsDataURL( files[ i ] );
