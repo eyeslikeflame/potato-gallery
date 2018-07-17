@@ -86,9 +86,8 @@
         (click)="fabAction()"
         [ngClass]="{'upload': showDropOff, 'fab-indigo': appService.isSelected || showDropOff}">
 
-    <label class="mdc-fab__icon material-icons"
-           for="file"
-           *ngIf="!showDropOff && !appService.isSelected">add</label>
+    <span class="mdc-fab__icon material-icons"
+          *ngIf="!showDropOff && !appService.isSelected">add</span>
     <span class="mdc-fab__icon material-icons" *ngIf="appService.isSelected">delete</span>
     <span class="mdc-fab__icon material-icons" *ngIf="showDropOff">arrow_upward</span>
 </button>

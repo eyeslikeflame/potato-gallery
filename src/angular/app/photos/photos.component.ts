@@ -53,6 +53,7 @@ export class PhotosComponent implements OnInit, OnDestroy {
             return false;
         }
         this.fileInput.files = droppedFiles;
+        this.load( this.fileInput.files );
     }
 
     private validateFiles( fileList: FileList ) {
@@ -126,7 +127,7 @@ export class PhotosComponent implements OnInit, OnDestroy {
            
         } else {
             const input: HTMLInputElement = document.querySelector('#file');
-            input.focus();
+            input.click();
         }
     }
 
