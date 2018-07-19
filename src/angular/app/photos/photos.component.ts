@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MDCTextField } from '@material/textfield';
 import { MDCRipple } from '@material/ripple';
+import { MDCSnackbar } from '@material/snackbar';
 
 import { AppService } from '../app.service';
 import { PhotosService } from './photos.service';
@@ -15,15 +16,16 @@ import { PhotosService } from './photos.service';
 } )
 export class PhotosComponent implements OnInit, OnDestroy {
     public imgArray = [];
-    active = [];
+    public active = [];
     private files;
-    title = '';
-    loading = false;
-    loadedPhotos = [];
-    albumId = null;
-    showDropOff = false;
-    fileInput: any;
-    fullSize = {};
+    public title = '';
+    public loading = false;
+    public loadedPhotos = [];
+    public albumId = null;
+    public showDropOff = false;
+    public fileInput: any;
+    public fullSize = {};
+    public snackbar;
 
     @HostListener( 'dragover', [ "$event" ] )
     @HostListener( 'dragenter', [ "$event" ] )
@@ -33,8 +35,6 @@ export class PhotosComponent implements OnInit, OnDestroy {
         this.showDropOff = true;
     }
 
-    // @HostListener('dragleave', ["$event"] )
-    // @HostListener('dragend', ["$event"] )
     dragend( e ) {
         e.preventDefault();
         e.stopPropagation();
@@ -84,11 +84,15 @@ export class PhotosComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
+        const textField = new MDCTextField( document.querySelector( '.mdc-text-field' ) );
+        MDCRipple.attachTo( document.querySelector( '.mdc-button' ) );
+
         this.titleService.setTitle( '🥔 Album | Gallery' );
         this.appService.title = 'Album';
-        const textField = new MDCTextField( document.querySelector( '.mdc-text-field' ) );
+
         this.fileInput = document.querySelector( '#file' );
-        MDCRipple.attachTo( document.querySelector( '.mdc-button' ) );
+       
         this.route.params.subscribe( params => {
             if ( params.id ) {
                 this.albumId = params.id;
@@ -116,12 +120,21 @@ export class PhotosComponent implements OnInit, OnDestroy {
 
     public fabAction() {
         if ( this.appService.isSelected ) {
-            this.appService.deletePhotos().subscribe( deleted => {
+            this.appService.deletePhotos().subscribe( (deleted: any) => {
                 for (let i = 0; i < this.appService.album.photos.length; i++) {
                     if ( this.appService.selected[i] ) {
                         delete this.appService.album.photos[i];
                     }
                 }
+                const dataObj = {
+                    message: deleted.message,
+                    actionText: 'Cool',
+                    actionHandler: function () {
+                        alert('cool');
+                    }
+                };
+                  
+                this.snackbar.show(dataObj);
                 this.appService.clearSelection();
             });
            
@@ -138,6 +151,15 @@ export class PhotosComponent implements OnInit, OnDestroy {
         if ( this.albumId ) {
             return this.photosService.saveAlbum( { title: title }, this.files, this.albumId ).subscribe( album => {
                 this.loading = false;
+                const dataObj = {
+                    message: album.message,
+                    actionText: 'Cool',
+                    actionHandler: function () {
+                        alert('cool');
+                    }
+                };
+                  
+                this.snackbar.show(dataObj);
             } );
         }
 
@@ -145,6 +167,7 @@ export class PhotosComponent implements OnInit, OnDestroy {
         this.photosService.saveAlbum( { title: title }, this.files ).subscribe( album => {
             this.loading = false;
             this.router.navigate( [ '/album', album.id ] );
+           
         } );
     }
 
