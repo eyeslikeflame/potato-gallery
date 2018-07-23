@@ -57,7 +57,10 @@ export class GalleryComponent implements OnInit, OnDestroy {
                 this.appService.clearSelection();
             } );
         } else {
-            this.router.navigate( [ '/album' ] );
+            this.galleryService.createAlbum().subscribe( ( album : any ) => {
+                console.log(album)
+                this.router.navigate( [ '/album', album.id ] );
+            } );
         }
     }
 }

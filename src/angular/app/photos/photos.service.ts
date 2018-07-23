@@ -20,12 +20,7 @@ export class PhotosService {
             }
         }
 
-
-        if ( id ) {
-            return this.http.patch( `/api/albums/update/${id}`, formData );
-        }
-
-        return this.http.post( '/api/albums/new-album/save', formData );
+        return this.http.patch( `/api/albums/update/${id}`, formData );
     }
 
 }

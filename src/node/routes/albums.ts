@@ -27,7 +27,7 @@ class AlbumsRoute {
         } );
 
         this.router.post( '/new-album/save', ( request, response ) => {
-            this.controller.saveAlbum( request, response );
+            this.controller.create( request, response );
         } );
 
         this.router.patch( '/update/:id', ( request, response ) => {

@@ -108,25 +108,14 @@ class AlbumsController {
         form.keepExtensions = true;
         form.uploadDir = path.join( globalAny.appRoot, '/pictures' );
         const parsed = await form.parse( request, ( err, fields, files ) => {
-            if ( !update ) {
-                this.create( files, fields.title ).then( album => {
-                    response.json( {
-                        id:      album._id,
-                        message: 'Album is successfully created'
-                    } );
-                } ).catch( err => {
-                    response.status( 500 ).json( 'There was a problem with saving an album' );
+            this.update( files, fields.title, request.params.id ).then( album => {
+                response.json( {
+                    id:      album._id,
+                    message: 'Album is successfully saved'
                 } );
-            } else {
-                this.update( files, fields.title, request.params.id ).then( album => {
-                    response.json( {
-                        id:      album._id,
-                        message: 'Album is successfully saved'
-                    } );
-                } ).catch( err => {
-                    response.status( 500 ).json( 'There was a problem with saving an album' );
-                } );
-            }
+            } ).catch( err => {
+                response.status( 500 ).json( 'There was a problem with saving an album' );
+            } );
         } );
 
     }
@@ -188,26 +177,15 @@ class AlbumsController {
         } );
     }
 
-    private async create( files, title ) {
-        return await Albums.create( {
-            title: title
+    public create( request, response ) {
+        return Albums.create( { 
+            
         } ).then( album => {
-            const formatted = this.format( files, album._id );
-            if ( files && files[ 0 ] ) {
-                Photos.insertMany( formatted ).then( photos => {
-                    if ( !album.preview && photos[ 0 ] ) {
-                        Albums.update( {
-                            _id: album._id
-                        }, {
-                            $set: {
-                                preview: photos[ 0 ]._id
-                            }
-                        } ).then();
-                    }
-                } );
-            }
-            return album;
-        } );
+            response.json( {
+                id:      album._id,
+                message: 'Album is successfully created'
+            } );
+        });
     }
 
     private async update( files, title, id ) {
