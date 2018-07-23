@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import { map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable( {
     providedIn: 'root'
 } )
 export class PhotosService {
 
-    constructor( private http: Http ) {
+    constructor( private http: HttpClient ) {
     }
 
 
@@ -23,10 +22,10 @@ export class PhotosService {
 
 
         if ( id ) {
-            return this.http.patch( `/api/albums/update/${id}`, formData ).pipe( map( res => res.json() ) );
+            return this.http.patch( `/api/albums/update/${id}`, formData );
         }
 
-        return this.http.post( '/api/albums/new-album/save', formData ).pipe( map( res => res.json() ) );
+        return this.http.post( '/api/albums/new-album/save', formData );
     }
 
 }

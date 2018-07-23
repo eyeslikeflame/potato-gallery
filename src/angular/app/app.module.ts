@@ -1,6 +1,5 @@
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -19,7 +18,6 @@ import { SafeHtmlPipe } from './safe-html.pipe';
         SafeHtmlPipe
     ],
     imports:      [
-        HttpModule,
         HttpClientModule,
         BrowserModule,
         AppRoutingModule,

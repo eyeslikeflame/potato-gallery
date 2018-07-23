@@ -149,7 +149,7 @@ export class PhotosComponent implements OnInit, OnDestroy {
         const title = this.title || 'Untitled';
 
         if ( this.albumId ) {
-            return this.photosService.saveAlbum( { title: title }, this.files, this.albumId ).subscribe( album => {
+            return this.photosService.saveAlbum( { title: title }, this.files, this.albumId ).subscribe( ( album: any ) => {
                 this.loading = false;
                 const dataObj = {
                     message: album.message,
@@ -164,7 +164,7 @@ export class PhotosComponent implements OnInit, OnDestroy {
         }
 
         this.titleService.setTitle( `${this.title || 'Album'} | Gallery` );
-        this.photosService.saveAlbum( { title: title }, this.files ).subscribe( album => {
+        this.photosService.saveAlbum( { title: title }, this.files ).subscribe( ( album: any ) => {
             this.loading = false;
             this.router.navigate( [ '/album', album.id ] );
            
