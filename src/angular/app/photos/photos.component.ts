@@ -120,7 +120,7 @@ export class PhotosComponent implements OnInit, OnDestroy {
 
     public fabAction() {
         if ( this.appService.isSelected ) {
-            this.appService.deletePhotos().subscribe( (deleted: any) => {
+            this.appService.deletePhotos(this.albumId).subscribe( (deleted: any) => {
                 for (let i = 0; i < this.appService.album.photos.length; i++) {
                     if ( this.appService.selected[i] ) {
                         delete this.appService.album.photos[i];

@@ -23,8 +23,8 @@ export class AppService {
         return this.http.post( `/api/albums/delete/`, this.selected );
     }
 
-    public deletePhotos() {
-        return this.http.post( `/api/photos/delete/`, this.selected );
+    public deletePhotos(id) {
+        return this.http.post( `/api/photos/delete/${id}`, this.selected );
     }
 
     public clearSelection() {

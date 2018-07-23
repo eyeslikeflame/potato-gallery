@@ -37,12 +37,24 @@ class PhotosController {
                 _id: {
                     $in: photoArr
                 }
-            } ).then();
+            } ).then( removed => {
+                Photos.findOne({ 
+                    album: request.params.id 
+                }).then( photo => {
+                    Albums.update( {
+                        _id: new Types.ObjectId( request.params.id )
+                    }, {
+                        $set: {
+                            preview: new Types.ObjectId( photo._id ) 
+                        }
+                    } ).then();
+                });
+            });
 
-            response.json({
+            response.json( {
                 success: true,
                 message: `Successfully deleted ${photoArr.length} photo${photoArr.length > 1 ? 's' : ''}`
-            });
+            } );
         });
     }
 }

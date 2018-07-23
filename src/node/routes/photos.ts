@@ -21,7 +21,7 @@ class PhotosRoute {
             this.controller.getPhoto( request, response );
         } );
 
-        this.router.post( '/delete', ( request, response ) => {
+        this.router.post( '/delete/:id', ( request, response ) => {
             this.controller.deletePhotos( request, response );
         } )
 
