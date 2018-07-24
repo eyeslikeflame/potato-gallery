@@ -47,7 +47,6 @@ export class GalleryComponent implements OnInit, OnDestroy {
     public fabAction() {
         if ( this.appService.isSelected ) {
             this.appService.deleteAlbums().subscribe( deleted => {
-
                 this.appService.albums = this.appService.albums.map( ( el, i ) => {
                     if ( this.appService.selected[ i ] ) {
                         return null;
@@ -58,7 +57,6 @@ export class GalleryComponent implements OnInit, OnDestroy {
             } );
         } else {
             this.galleryService.createAlbum().subscribe( ( album : any ) => {
-                console.log(album)
                 this.router.navigate( [ '/album', album.id ] );
             } );
         }

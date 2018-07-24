@@ -53,7 +53,10 @@ export class PhotosComponent implements OnInit, OnDestroy {
             return false;
         }
         this.fileInput.files = droppedFiles;
-        this.load( this.fileInput.files );
+        if ( navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ) {
+            this.load( this.fileInput.files );
+        }
+        
     }
 
     private validateFiles( fileList: FileList ) {
@@ -147,28 +150,22 @@ export class PhotosComponent implements OnInit, OnDestroy {
     public save() {
         this.loading = true;
         const title = this.title || 'Untitled';
-
+        this.titleService.setTitle( `${title || 'Album'} | Gallery` );
         if ( this.albumId ) {
             return this.photosService.saveAlbum( { title: title }, this.files, this.albumId ).subscribe( ( album: any ) => {
                 this.loading = false;
+                this.appService.album = album;
                 const dataObj = {
-                    message: album.message,
+                    message: 'Successfully added some amount of photos',
                     actionText: 'Cool',
-                    actionHandler: function () {
+                    actionHandler: () => {
                         alert('cool');
                     }
                 };
-                  
+                this.fileInput.value = '';
                 this.snackbar.show(dataObj);
             } );
         }
-
-        this.titleService.setTitle( `${this.title || 'Album'} | Gallery` );
-        this.photosService.saveAlbum( { title: title }, this.files ).subscribe( ( album: any ) => {
-            this.loading = false;
-            this.router.navigate( [ '/album', album.id ] );
-           
-        } );
     }
 
     public load( files ) {
@@ -180,21 +177,8 @@ export class PhotosComponent implements OnInit, OnDestroy {
             alert(validate.message)
             return false;
         }
-        for ( let i = 0; i < files.length; i++ ) {
-            const reader = new FileReader();
-            _this.imgArray[ i ] = {
-                src:   null,
-                title: files[ i ].name.replace( /\.[a-zA-Z]+$/, '' )
-            };
-            reader.onload = ( event: any ) => {
-                _this.imgArray[ i ] = {
-                    src:   event.target.result,
-                    title: files[ i ].name.replace( /\.[a-zA-Z]+$/, '' )
-                };
-            };
 
-            reader.readAsDataURL( files[ i ] );
-        }
+        this.save();
     }
 
     public imgLoaded( event, i ) {

@@ -5,6 +5,7 @@ import * as fs from 'fs';
 import * as formidable from 'formidable';
 import * as path from 'path';
 import { photos } from '../routes/photos';
+import { resolve } from 'dns';
 
 const globalAny: any = global;
 globalAny.appRoot = process.cwd();
@@ -53,11 +54,11 @@ class AlbumsController {
         } );
     }
 
-    public getAlbum( request, response ) {
+    public getAlbum( request, response, id = null ) {
         Albums.aggregate( [
             {
                 $match: {
-                    _id: new Types.ObjectId( request.params.id )
+                    _id: new Types.ObjectId( id || request.params.id )
                 }
             },
             {
@@ -108,11 +109,12 @@ class AlbumsController {
         form.keepExtensions = true;
         form.uploadDir = path.join( globalAny.appRoot, '/pictures' );
         const parsed = await form.parse( request, ( err, fields, files ) => {
-            this.update( files, fields.title, request.params.id ).then( album => {
-                response.json( {
-                    id:      album._id,
-                    message: 'Album is successfully saved'
-                } );
+            this.update( files, fields.title, request.params.id ).then( ( album: any ) => {
+                this.getAlbum( request, response, album._id);
+                // response.json( {
+                //     id:      album._id,
+                //     message: 'Album is successfully saved'
+                // } );
             } ).catch( err => {
                 response.status( 500 ).json( 'There was a problem with saving an album' );
             } );
@@ -189,28 +191,32 @@ class AlbumsController {
     }
 
     private async update( files, title, id ) {
-        return await Albums.findOneAndUpdate( {
-            _id: new Types.ObjectId( id )
-        }, {
-            title: title
-        }, {
-            upsert: true, 'new': true
-        } ).then( updated => {
-            if ( files && files[ 0 ] ) {
-                Photos.insertMany( this.format( files, updated._id ) ).then( photos => {
-                    if ( !updated.preview && photos[ 0 ] ) {
-                        Albums.update( {
-                            _id: updated._id
-                        }, {
-                            $set: {
-                                preview: photos[ 0 ]._id
-                            }
-                        } ).then();
-                    }
-                } );
-            }
-            return updated;
-        } );
+        return new Promise( (resolve, reject) => {
+            Albums.findOneAndUpdate( {
+                _id: new Types.ObjectId( id )
+            }, {
+                title: title
+            }, {
+                upsert: true, 'new': true
+            } ).then( updated => {
+                if ( files && files[ 0 ] ) {
+                    Photos.insertMany( this.format( files, updated._id ) ).then( photos => {
+                        if ( !updated.preview && photos[ 0 ] ) {
+                            Albums.update( {
+                                _id: updated._id
+                            }, {
+                                $set: {
+                                    preview: photos[ 0 ]._id
+                                }
+                            } ).then();
+                        }
+                        resolve(updated);
+                    } );
+                   
+                }
+                
+            } );
+        } ) 
     }
 
     private format( files, id, ) {
