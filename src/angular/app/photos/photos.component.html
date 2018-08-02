@@ -12,14 +12,11 @@
                 (click)="fullSize = {}">arrow_back</button>
         <div class="title">{{fullSize.title}}</div>
     </div>
-    
+
     <img [src]="fullSize.src" alt="">
 </div>
 
 <div class="manage">
-    <button (click)="save()" class="mdc-button mdc-button--raised">
-        Save
-    </button>
     <div class="file-input">
         <input type="file" id="file" (change)="load($event.target.files)" accept=".jpg" multiple>
     </div>
@@ -72,11 +69,9 @@
                          (load)="imgLoaded($event, i)">
                 </div>
 
-
                 <div class="mdc-image-list__supporting">
                     <span class="mdc-image-list__label">{{photo?.title}}</span>
                 </div>
-
             </li>
         </ng-container>
     </ul>

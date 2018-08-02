@@ -1,16 +1,14 @@
 import * as mongoose from 'mongoose';
+import Config from '../config';
 
 class MongoClient {
-    private uri = 'mongodb://localhost:27017/gallery';
-    private options = {
-        autoIndex: false, // Don't build indexes
-        reconnectTries: 10, // Never stop trying to reconnect
-        reconnectInterval: 500, // Reconnect every 500ms
-        poolSize: 10, // Maintain up to 10 socket connections
-        // If not connected, return errors immediately rather than waiting for reconnect
-        bufferMaxEntries: 0,
-        useNewUrlParser: true
-    };
+    constructor( private config: Config ) {
+        const mongoConfig = config.mongo();
+        this.uri = mongoConfig.uri;
+        this.options = mongoConfig.options;
+    }
+    private uri;
+    private options;
 
     public async connect() {
         mongoose.set('debug', true);
@@ -22,4 +20,4 @@ class MongoClient {
     }
 }
 
-export default new MongoClient();
+export default new MongoClient( new Config() );

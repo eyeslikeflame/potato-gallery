@@ -53,24 +53,24 @@ export class PhotosComponent implements OnInit, OnDestroy {
             return false;
         }
         this.fileInput.files = droppedFiles;
-        if ( navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ) {
+        if ( navigator.userAgent.toLowerCase().indexOf( 'firefox' ) > -1 ) {
             this.load( this.fileInput.files );
         }
-        
+
     }
 
     private validateFiles( fileList: FileList ) {
         let status = {
-            valid: true,
+            valid:   true,
             message: ''
         };
         for ( let i = 0; i < fileList.length; i++ ) {
-            if ( fileList[i].type !== 'image/jpeg' ) {
+            if ( fileList[ i ].type !== 'image/jpeg' ) {
                 status.valid = false;
                 status.message = 'JPEG format only is allowed';
                 break;
             }
-            if ( fileList[i].size > 5000000) {
+            if ( fileList[ i ].size > 5000000 ) {
                 status.valid = false;
                 status.message = '5 MB is the max size for each file';
                 break;
@@ -87,15 +87,14 @@ export class PhotosComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
+        this.snackbar = new MDCSnackbar( document.querySelector( '.mdc-snackbar' ) );
         const textField = new MDCTextField( document.querySelector( '.mdc-text-field' ) );
-        MDCRipple.attachTo( document.querySelector( '.mdc-button' ) );
 
         this.titleService.setTitle( '🥔 Album | Gallery' );
         this.appService.title = 'Album';
 
         this.fileInput = document.querySelector( '#file' );
-       
+
         this.route.params.subscribe( params => {
             if ( params.id ) {
                 this.albumId = params.id;
@@ -117,32 +116,31 @@ export class PhotosComponent implements OnInit, OnDestroy {
             this.fullSize = photo;
         } else {
             this.appService.selectToggle( index, photo._id );
-
         }
     }
 
     public fabAction() {
         if ( this.appService.isSelected ) {
-            this.appService.deletePhotos(this.albumId).subscribe( (deleted: any) => {
-                for (let i = 0; i < this.appService.album.photos.length; i++) {
-                    if ( this.appService.selected[i] ) {
-                        delete this.appService.album.photos[i];
+            this.appService.deletePhotos( this.albumId ).subscribe( ( deleted: any ) => {
+                for ( let i = 0; i < this.appService.album.photos.length; i++ ) {
+                    if ( this.appService.selected[ i ] ) {
+                        delete this.appService.album.photos[ i ];
                     }
                 }
                 const dataObj = {
-                    message: deleted.message,
-                    actionText: 'Cool',
+                    message:       deleted.message,
+                    actionText:    'Cool',
                     actionHandler: function () {
-                        alert('cool');
+                        alert( 'cool' );
                     }
                 };
-                  
-                this.snackbar.show(dataObj);
+
+                this.snackbar.show( dataObj );
                 this.appService.clearSelection();
-            });
-           
+            } );
+
         } else {
-            const input: HTMLInputElement = document.querySelector('#file');
+            const input: HTMLInputElement = document.querySelector( '#file' );
             input.click();
         }
     }
@@ -151,30 +149,27 @@ export class PhotosComponent implements OnInit, OnDestroy {
         this.loading = true;
         const title = this.title || 'Untitled';
         this.titleService.setTitle( `${title || 'Album'} | Gallery` );
-        if ( this.albumId ) {
-            return this.photosService.saveAlbum( { title: title }, this.files, this.albumId ).subscribe( ( album: any ) => {
-                this.loading = false;
-                this.appService.album = album;
-                const dataObj = {
-                    message: 'Successfully added some amount of photos',
-                    actionText: 'Cool',
-                    actionHandler: () => {
-                        alert('cool');
-                    }
-                };
-                this.fileInput.value = '';
-                this.snackbar.show(dataObj);
-            } );
-        }
+        return this.photosService.saveAlbum( { title: title }, this.files, this.albumId ).subscribe( ( album: any ) => {
+            this.loading = false;
+            this.appService.album = album;
+            const dataObj = {
+                message:       'Successfully added some amount of photos',
+                actionText:    'Cool',
+                actionHandler: () => {
+                    alert( 'cool' );
+                }
+            };
+            this.fileInput.value = '';
+            this.snackbar.show( dataObj );
+        } );
     }
 
     public load( files ) {
-        const _this = this;
         this.files = files;
         this.imgArray = [];
         const validate = this.validateFiles( files );
         if ( !validate.valid ) {
-            alert(validate.message)
+            alert( validate.message );
             return false;
         }
 
