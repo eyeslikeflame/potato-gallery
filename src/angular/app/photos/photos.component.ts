@@ -15,7 +15,6 @@ import { PhotosService } from './photos.service';
     providers:   [ PhotosService ]
 } )
 export class PhotosComponent implements OnInit, OnDestroy {
-    public imgArray = [];
     public active = [];
     private files;
     public title = '';
@@ -81,7 +80,6 @@ export class PhotosComponent implements OnInit, OnDestroy {
 
     constructor( private photosService: PhotosService,
                  private route: ActivatedRoute,
-                 private router: Router,
                  private titleService: Title,
                  public appService: AppService ) {
     }
@@ -166,7 +164,6 @@ export class PhotosComponent implements OnInit, OnDestroy {
 
     public load( files ) {
         this.files = files;
-        this.imgArray = [];
         const validate = this.validateFiles( files );
         if ( !validate.valid ) {
             alert( validate.message );

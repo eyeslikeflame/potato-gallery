@@ -30,26 +30,25 @@
 </div>
 
 <div class="photos-wrapper">
-    <ul class="mdc-image-list mdc-image-list--masonry photos-list">
+    <!--<ul class="mdc-image-list mdc-image-list&#45;&#45;masonry photos-list">-->
 
-        <li class="mdc-image-list__item"
-            *ngFor="let img of imgArray; let i = index"
+        <!--<li class="mdc-image-list__item"-->
+            <!--*ngFor="let img of imgArray; let i = index"-->
+            <!--[ngClass]="{active: active[i]}">-->
 
-            [ngClass]="{active: active[i]}">
+            <!--<div *ngIf="!img.src" class="img-preload">-->
+                <!--<i class="material-icons">photo_size_select_actual</i>-->
+            <!--</div>-->
 
-            <div *ngIf="!img.src" class="img-preload">
-                <i class="material-icons">photo_size_select_actual</i>
-            </div>
+            <!--<div class="photo" (click)="photoClick(i)">-->
+                <!--<img class="mdc-image-list__image" [src]="img?.src" [ngStyle]="{opacity: img.src ? 1 : 0}">-->
+            <!--</div>-->
 
-            <div class="photo" (click)="photoClick(i)">
-                <img class="mdc-image-list__image" [src]="img?.src" [ngStyle]="{opacity: img.src ? 1 : 0}">
-            </div>
-
-            <div class="mdc-image-list__supporting">
-                <span class="mdc-image-list__label">{{img?.title}}</span>
-            </div>
-        </li>
-    </ul>
+            <!--<div class="mdc-image-list__supporting">-->
+                <!--<span class="mdc-image-list__label">{{img?.title}}</span>-->
+            <!--</div>-->
+        <!--</li>-->
+    <!--</ul>-->
 
     <ul class="mdc-image-list mdc-image-list--masonry photos-list">
         <ng-container *ngFor="let photo of appService.album?.photos; let i = index">
