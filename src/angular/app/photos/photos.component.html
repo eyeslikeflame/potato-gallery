@@ -30,32 +30,30 @@
     </div>
 </div>
 
-<div class="photos-wrapper">
-    <ul class="mdc-image-list mdc-image-list--masonry photos-list">
-        <ng-container *ngFor="let photo of appService.album?.photos; let i = index">
-            <li class="mdc-image-list__item"
-                *ngIf="appService.album && appService.album?.photos[i]"
-                [ngClass]="{'active': active[i], 'selected': appService.selected[i]}">
-                <div class="select" *ngIf="!active[i] && !appService.selected[i]">
-                    <i class="material-icons" (click)="appService.selectToggle(i, photo._id)">check_circle</i>
-                </div>
-                <div class="img-preload" *ngIf="!imgLoaded[i]">
-                    <i class="material-icons">photo_size_select_actual</i>
-                </div>
+<ul class="photo-list">
+    <ng-container *ngFor="let photo of appService.album?.photos; let i = index">
+        <li class="photo-list-item"
+            *ngIf="appService.album && appService.album?.photos[i]"
+            [ngClass]="{'active': active[i], 'selected': appService.selected[i]}">
+            <div class="select" *ngIf="!active[i] && !appService.selected[i]">
+                <i class="material-icons" (click)="appService.selectToggle(i, photo._id)">check_circle</i>
+            </div>
+            <div class="img-preload" *ngIf="!imgLoaded[i]">
+                <i class="material-icons">photo_size_select_actual</i>
+            </div>
 
-                <div class="photo" (click)="photoClick(i, photo)">
-                    <img class="mdc-image-list__image"
-                         [src]="photo?.src"
-                         (load)="imgLoaded($event, i)">
-                </div>
+            <div class="photo" (click)="photoClick(i, photo)">
+                <img class="photo-list-img"
+                     [src]="photo?.src"
+                     (load)="imgLoaded($event, i)">
+            </div>
 
-                <div class="mdc-image-list__supporting">
-                    <span class="mdc-image-list__label">{{photo?.title}}</span>
-                </div>
-            </li>
-        </ng-container>
-    </ul>
-</div>
+            <div class="photo-list-title">
+                {{photo?.title}}
+            </div>
+        </li>
+    </ng-container>
+</ul>
 
 <button class="mdc-fab app-fab--absolute"
         (click)="fabAction()"
