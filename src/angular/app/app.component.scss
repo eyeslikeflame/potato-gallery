@@ -12,11 +12,21 @@
 ::ng-deep {
     .app-fab--absolute {
         position: fixed;
-        right: 0;
-        left: 0;
-        bottom: 4rem;
-        margin: auto;
-        z-index: 10;
+
+        @include mobile {
+            right: 2rem;
+            bottom: 2rem;
+            margin: auto;
+            z-index: 10;
+        }
+
+        @include hd-desktop {
+            right: 0;
+            left: 0;
+            bottom: 4rem;
+            margin: auto;
+            z-index: 10;
+        }
     }
 
     .check-wrapper {
@@ -128,8 +138,15 @@ header {
     display: flex;
     align-items: center;
     border-radius: 0 0 1rem 1rem;
-    padding: 0 2rem;
     transition: 200ms ease;
+
+    @include mobile {
+        padding: 0 0.5rem;
+    }
+
+    @include hd-desktop {
+        padding: 0 2rem;
+    }
 
     &.indigo {
         background: $indigo;
@@ -168,8 +185,15 @@ header {
 }
 
 main {
-    padding: 2rem;
     display: flex;
     max-width: 100vw;
     box-sizing: border-box;
+
+    @include mobile {
+        padding: 0.5rem;
+    }
+
+    @include hd-desktop {
+        padding: 2rem;
+    }
 }
