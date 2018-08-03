@@ -63,6 +63,10 @@
 .favorite {
     cursor: pointer;
     user-select: none;
+    background: linear-gradient(to left, rgba(240, 240, 240, 1) 70%, rgba(240, 240, 240, 0) 100%);
+    position: absolute;
+    right: 0;
+    padding-left: 1rem;
     .active {
         color: $topaz;
     }
