@@ -25,6 +25,10 @@
         background-repeat: no-repeat;
     }
     .gallery-list-title {
+        position: absolute;
+        width: 100%;
+        overflow: hidden;
+        height: 2rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
