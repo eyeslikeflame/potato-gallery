@@ -6,22 +6,9 @@
 :host {
     flex: 1;
     position: relative;
-}
-
-.photos-list {
-    @include mdc-image-list-masonry-columns(8);
-
-    @media screen and (max-width: 1280px) {
-        @include mdc-image-list-masonry-columns(6);
-    }
-    @media screen and (max-width: 700px) {
-        @include mdc-image-list-masonry-columns(2);
-    }
-
-    .mdc-image-list__item {
-        @include mdc-image-list-corner-radius(0.5rem);
-    }
-    column-gap: 2rem;
+    display: flex;
+    flex-flow: column;
+    width: 100%;
 }
 
 .manage {
@@ -39,6 +26,23 @@
         }
     }
 
+}
+
+.photo-list {
+    column-count: 5;
+    column-gap: 0.5rem;
+
+    .photo-list-item {
+        /*ikr this is stupid but dunno what to do w/ this*/
+        margin-bottom: calc(0.5rem - 2px);
+        position: relative;
+        break-inside: avoid;
+        cursor: pointer;
+    }
+    .photo-list-img {
+        border-radius: 0.5rem;
+        width: 100%;
+    }
 }
 
 .drop-here {
@@ -69,22 +73,6 @@
     }
 }
 
-li {
-    outline: none;
-    cursor: pointer;
-
-    .mdc-image-list__image-aspect-container {
-        cursor: pointer;
-    }
-
-    .mdc-image-list__image {
-        transition: opacity 200ms;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-attachment: fixed;
-    }
-}
-
 .full-size {
     position: fixed;
     z-index: 999;
@@ -106,7 +94,8 @@ li {
         display: flex;
         align-items: center;
         padding: 0 2rem;
-        
+        z-index: 1;
+
         .title {
             color: #ffffff;
         }

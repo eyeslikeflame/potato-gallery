@@ -1,16 +1,16 @@
-<ul class="mdc-image-list gallery-list album">
+<ul class="gallery-list album">
     <ng-container *ngFor="let album of appService.albums; let i = index;">
-        <li class="mdc-image-list__item" *ngIf="album" [ngClass]="{'selected': appService.selected[i]}">
+        <li class="gallery-list-item" *ngIf="album" [ngClass]="{'selected': appService.selected[i]}">
             <div class="select" *ngIf="!appService.selected[i]">
                 <i class="material-icons" (click)="appService.selectToggle(i, album._id)">check_circle</i>
             </div>
-            <div class="mdc-image-list__image-aspect-container"
+            <div class="gallery-list-content photo"
                  (click)="albumClick(i, album?._id)">
-                <div class="mdc-image-list__image" [ngStyle]="{'background-image': 'url(' + album.preview + ')'}"></div>
+                <div class="gallery-list-img" [ngStyle]="{'background-image': 'url(' + album.preview + ')'}"></div>
                 <span class="empty-album" *ngIf="!album.preview">This album is empty. Consider adding some pics</span>
             </div>
-            <div class="mdc-image-list__supporting">
-                <span class="mdc-image-list__label">{{album?.title}}</span>
+            <div class="gallery-list-title">
+                <span class="">{{album?.title}}</span>
                 <span class="favorite" (click)="favorite(album._id, i)">
                     <i class="material-icons" [ngClass]="{'active': album?.favorite}">{{album?.favorite ? 'favorite' : 'favorite_border'}}</i>
                 </span>
