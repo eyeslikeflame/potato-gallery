@@ -36,7 +36,11 @@ class AlbumsRoute {
 
         this.router.patch( '/favorite/:id', ( request, response ) => {
             this.controller.favoriteAlbum( request, response );
-        } )
+        } );
+
+        this.router.patch( '/update/:id/title', ( request, response ) => {
+            this.controller.updateTitle( request, response );
+        } );
     }
 }
 

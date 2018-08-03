@@ -5,6 +5,7 @@ import { MDCTextField } from '@material/textfield';
 import { MDCRipple } from '@material/ripple';
 import { MDCSnackbar } from '@material/snackbar';
 
+
 import { AppService } from '../app.service';
 import { PhotosService } from './photos.service';
 
@@ -92,7 +93,9 @@ export class PhotosComponent implements OnInit, OnDestroy {
         this.appService.title = 'Album';
 
         this.fileInput = document.querySelector( '#file' );
+        const title = document.getElementById('title');
 
+        // todo refactor
         this.route.params.subscribe( params => {
             if ( params.id ) {
                 this.albumId = params.id;
@@ -100,6 +103,9 @@ export class PhotosComponent implements OnInit, OnDestroy {
                     this.appService.album = album;
                     this.title = album.title;
                     this.titleService.setTitle( `${album.title || 'Album'} | Gallery` );
+                    this.photosService.debounceSave(title, this.albumId).subscribe(data => {
+                        console.log(data)
+                    });
                 } );
             }
         } );
@@ -145,9 +151,7 @@ export class PhotosComponent implements OnInit, OnDestroy {
 
     public save() {
         this.loading = true;
-        const title = this.title || 'Untitled';
-        this.titleService.setTitle( `${title || 'Album'} | Gallery` );
-        return this.photosService.saveAlbum( { title: title }, this.files, this.albumId ).subscribe( ( album: any ) => {
+        return this.photosService.saveAlbum( this.files, this.albumId ).subscribe( ( album: any ) => {
             this.loading = false;
             this.appService.album = album;
             const dataObj = {

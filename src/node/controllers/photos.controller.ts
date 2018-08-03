@@ -18,12 +18,12 @@ class PhotosController {
     }
 
     public deletePhotos( request, response ) {
-        const photoArr = Object.values(request.body);
-        Photos.find({
+        const photoArr = Object.values( request.body );
+        Photos.find( {
             _id: {
                 $in: photoArr
             }
-        }).then( photos => {
+        } ).then( photos => {
             photos.map( el => {
                 fs.unlink( path.join( globalAny.appRoot, '/pictures', el.src ), ( err ) => {
                     if ( err ) {
@@ -38,24 +38,24 @@ class PhotosController {
                     $in: photoArr
                 }
             } ).then( removed => {
-                Photos.findOne({ 
-                    album: request.params.id 
-                }).then( photo => {
+                Photos.findOne( {
+                    album: request.params.id
+                } ).then( photo => {
                     Albums.update( {
                         _id: new Types.ObjectId( request.params.id )
                     }, {
                         $set: {
-                            preview: new Types.ObjectId( photo._id ) 
+                            preview: new Types.ObjectId( photo._id )
                         }
                     } ).then();
-                });
-            });
+                } );
+            } );
 
             response.json( {
                 success: true,
                 message: `Successfully deleted ${photoArr.length} photo${photoArr.length > 1 ? 's' : ''}`
             } );
-        });
+        } );
     }
 }
 

@@ -110,11 +110,7 @@ class AlbumsController {
         form.uploadDir = path.join( globalAny.appRoot, '/pictures' );
         const parsed = await form.parse( request, ( err, fields, files ) => {
             this.update( files, fields.title, request.params.id ).then( ( album: any ) => {
-                this.getAlbum( request, response, album._id);
-                // response.json( {
-                //     id:      album._id,
-                //     message: 'Album is successfully saved'
-                // } );
+                this.getAlbum( request, response, album._id );
             } ).catch( err => {
                 response.status( 500 ).json( 'There was a problem with saving an album' );
             } );
@@ -180,18 +176,16 @@ class AlbumsController {
     }
 
     public create( request, response ) {
-        return Albums.create( { 
-            
-        } ).then( album => {
-            response.json( {
+        return Albums.create( {} ).then( album => {
+            response.status( 201 ).json( {
                 id:      album._id,
                 message: 'Album is successfully created'
             } );
-        });
+        } );
     }
 
     private async update( files, title, id ) {
-        return new Promise( (resolve, reject) => {
+        return new Promise( ( resolve, reject ) => {
             Albums.findOneAndUpdate( {
                 _id: new Types.ObjectId( id )
             }, {
@@ -210,13 +204,30 @@ class AlbumsController {
                                 }
                             } ).then();
                         }
-                        resolve(updated);
+                        resolve( updated );
                     } );
-                   
+
                 }
-                
+
             } );
-        } ) 
+        } )
+    }
+
+    public async updateTitle( request, response ) {
+        return Albums.update( {
+            _id: new Types.ObjectId( request.params.id )
+        }, {
+            $set: {
+                title: request.body.title
+            }
+        } ).then( updated => {
+            response.json( true );
+        } ).catch( error => {
+            response.status(500).json( {
+                err: error,
+                message: 'Title was not saved properly'
+            } )
+        })
     }
 
     private format( files, id, ) {
