@@ -137,22 +137,27 @@
     }
 
 }
-
 header {
-    position: sticky;
+    position: relative;
+    display: flex;
+    flex-flow: column;
+}
+.header {
+    position: fixed;
     background: #ffffff;
     box-shadow: 0 0px 0.5rem 0 rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     border-radius: 0 0 1rem 1rem;
     transition: 200ms ease;
+    z-index: 10;
 
     @include mobile {
-        padding: 0 0.5rem;
+        padding: 0.5rem 0.5rem;
     }
 
     @include hd-desktop {
-        padding: 0 2rem;
+        padding: 0.5rem 2rem;
     }
 
     &.indigo {
