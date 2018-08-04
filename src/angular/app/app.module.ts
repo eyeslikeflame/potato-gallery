@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { PhotosComponent } from './photos/photos.component';
 import { GalleryComponent } from './gallery/gallery.component';
 import { AppService } from "./app.service";
+import { MobileService } from "./mobile.service";
 
 @NgModule( {
     declarations: [
@@ -23,7 +24,8 @@ import { AppService } from "./app.service";
     ],
     providers:    [
         AppService,
-        Title
+        Title,
+        MobileService
     ],
     bootstrap:    [ AppComponent ]
 } )

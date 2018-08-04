@@ -8,20 +8,17 @@
 
 .gallery-list {
     display: grid;
-
+    grid-column-gap: 1rem;
+    grid-row-gap: 1rem;
     @include mobile {
-        grid-column-gap: 0.5rem;
-        grid-row-gap: 0.5rem;
         grid-template-columns: repeat(2, 1fr);
     }
 
     @include hd-desktop {
-        grid-column-gap: 1rem;
-        grid-row-gap: 1rem;
         grid-template-columns: repeat(4, 1fr);
     }
 
-    @include fullhd-desktop-width {
+    @include fullhd-desktop {
         grid-template-columns: repeat(6, 1fr);
     }
 
@@ -87,9 +84,12 @@
     padding: 1rem;
     background: black;
     font-family: 'Roboto Mono', sans-serif;
-    font-size: 1.5rem;
     border-radius: 0.5rem 0.5rem 0 0;
     top: 0;
+
+    @include fullhd-desktop {
+        font-size: 1.5rem;
+    }
 }
 
 .favorite {

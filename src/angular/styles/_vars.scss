@@ -3,7 +3,7 @@ $black: #050505;
 $blue: #3126FF;
 $topaz: #A63D40;
 
-$mobile-width: 360px;
+$mobile-width: 300px;
 $tablet-width: 768px;
 $hd-desktop-width: 1280px;
 $fullhd-desktop-width: 1980px;
@@ -21,7 +21,7 @@ $qhd-desktop-width: 2560px;
     }
 }
 
-@mixin fullhd-desktop-width {
+@mixin fullhd-desktop {
     @media (min-width: #{$hd-desktop-width}){
         @content;
     }

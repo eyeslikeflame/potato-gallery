@@ -20,6 +20,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        console.log(window.innerHeight)
         this.titleService.setTitle( '🥔 Gallery' );
         this.appService.title = 'Gallery';
         this.appService.getAlbums().subscribe( albums => this.appService.albums = albums );
