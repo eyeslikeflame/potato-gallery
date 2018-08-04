@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Meta } from '@angular/platform-browser';
 
 @Injectable( {
     providedIn: 'root'
 } )
 export class AppService {
 
-    constructor( private http: HttpClient ) {
+    constructor( private http: HttpClient, private meta: Meta ) {
     }
 
     public selected = {};
@@ -17,13 +18,18 @@ export class AppService {
 
     public checkIfSelected() {
         this.isSelected = Object.keys( this.selected ).length;
+        if ( this.isSelected ) {
+            this.meta.updateTag( { name: 'theme-color', content: '#6200EE' } );
+        } else {
+            this.meta.updateTag( { name: 'theme-color', content: '#3126FF' } );
+        }
     }
 
     public deleteAlbums() {
         return this.http.post( `/api/albums/delete/`, this.selected );
     }
 
-    public deletePhotos(id) {
+    public deletePhotos( id ) {
         return this.http.post( `/api/photos/delete/${id}`, this.selected );
     }
 
