@@ -78,6 +78,10 @@ html {
     }
 }
 
+.full-size-photo {
+    overflow: hidden;
+}
+
 @keyframes fab-drop {
     0% {
         transform: translateY(-200%);

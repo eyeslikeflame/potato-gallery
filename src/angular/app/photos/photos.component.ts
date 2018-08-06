@@ -24,14 +24,14 @@ export class PhotosComponent implements OnInit, OnDestroy {
     public albumId = null;
     public showDropOff = false;
     public fileInput: any;
-    public fullSize = {};
+    public fullSize: any = {};
     public snackbar;
 
     constructor( private photosService: PhotosService,
                  private route: ActivatedRoute,
                  private titleService: Title,
                  public appService: AppService,
-                 public mobileService: MobileService) {
+                 public mobileService: MobileService ) {
     }
 
     @HostListener( 'dragover', [ "$event" ] )
@@ -87,7 +87,6 @@ export class PhotosComponent implements OnInit, OnDestroy {
     }
 
 
-
     ngOnInit() {
         this.snackbar = new MDCSnackbar( document.querySelector( '.mdc-snackbar' ) );
         const textField = new MDCTextField( document.querySelector( '.mdc-text-field' ) );
@@ -96,7 +95,7 @@ export class PhotosComponent implements OnInit, OnDestroy {
         this.appService.title = 'Album';
 
         this.fileInput = document.querySelector( '#file' );
-        const title = document.getElementById('title');
+        const title = document.getElementById( 'title' );
 
         // todo refactor
         this.route.params.subscribe( params => {
@@ -106,9 +105,9 @@ export class PhotosComponent implements OnInit, OnDestroy {
                     this.appService.album = album;
                     this.title = album.title;
                     this.titleService.setTitle( `${album.title || 'Album'} | Gallery` );
-                    this.photosService.debounceSave(title, this.albumId).subscribe(data => {
-                        console.log(data)
-                    });
+                    this.photosService.debounceSave( title, this.albumId ).subscribe( data => {
+                        console.log( data )
+                    } );
                 } );
             }
         } );
@@ -120,7 +119,7 @@ export class PhotosComponent implements OnInit, OnDestroy {
 
     public photoClick( index, photo? ) {
         if ( !this.appService.isSelected ) {
-            this.fullSize = photo;
+            this.fullSizeToggle( photo );
         } else {
             this.appService.selectToggle( index, photo._id );
         }
@@ -131,6 +130,15 @@ export class PhotosComponent implements OnInit, OnDestroy {
             this.appService.selectToggle( index, id );
             return false;
         }
+    }
+
+    public fullSizeToggle( photo? ) {
+        if ( this.fullSize.src ) {
+            this.fullSize = {};
+        } else {
+            this.fullSize = photo;
+        }
+        document.body.classList.toggle('full-size-photo')
     }
 
     public fabAction() {
