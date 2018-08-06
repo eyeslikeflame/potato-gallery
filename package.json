@@ -3,7 +3,8 @@
     "version": "0.0.0",
     "scripts": {
         "compile": "tsc -p ./src/node/tsconfig.node.json --allowJS -w",
-        "dev": "concurrently \"tsc -p ./src/node/tsconfig.node.json --allowJS -w\" \"ng build --watch\" \"nodemon ./dist-server/www.js -w ./dist-server\""
+        "dev": "concurrently \"tsc -p ./src/node/tsconfig.node.json --allowJS -w\" \"ng build --watch\" \"nodemon ./dist-server/www.js -w ./dist-server\"",
+        "dev-prod": "concurrently \"tsc -p ./src/node/tsconfig.node.json\" \"ng build --prod --aot\" \"nodemon ./dist-server/www.js\""
     },
     "private": true,
     "dependencies": {
@@ -15,6 +16,7 @@
         "@angular/http": "^6.0.9",
         "@angular/platform-browser": "^6.0.9",
         "@angular/platform-browser-dynamic": "^6.0.9",
+        "@angular/pwa": "^0.6.8",
         "@angular/router": "^6.0.9",
         "@material/button": "^0.38.0",
         "@material/fab": "^0.38.0",
@@ -34,7 +36,8 @@
         "mongoose": "^5.2.3",
         "morgan": "~1.9.0",
         "rxjs": "^6.2.2",
-        "zone.js": "^0.8.26"
+        "zone.js": "^0.8.26",
+        "@angular/service-worker": "^6.0.9"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "~0.6.1",

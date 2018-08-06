@@ -9,6 +9,8 @@ import { PhotosComponent } from './photos/photos.component';
 import { GalleryComponent } from './gallery/gallery.component';
 import { AppService } from "./app.service";
 import { MobileService } from "./mobile.service";
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule( {
     declarations: [
@@ -20,7 +22,8 @@ import { MobileService } from "./mobile.service";
         HttpClientModule,
         BrowserModule,
         AppRoutingModule,
-        FormsModule
+        FormsModule,
+        ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
     ],
     providers:    [
         AppService,
