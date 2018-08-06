@@ -1,6 +1,5 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<header [ngClass]="{'indigo': appService.isSelected}">
-    <div class="header">
+<header>
+    <div class="header" [ngClass]="{'indigo': appService.isSelected}">
         <div class="header-button">
             <button *ngIf="router.url !== '/gallery' && !appService.isSelected"
                     routerLink="/"

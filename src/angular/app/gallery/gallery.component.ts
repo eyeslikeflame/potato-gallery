@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { MDCRipple } from '@material/ripple';
+
 import { AppService } from '../app.service';
 import { GalleryService } from './gallery.service';
-import { MDCRipple } from '@material/ripple';
+import { MobileService } from "../mobile.service";
 
 @Component( {
     selector:    'app-gallery',
@@ -16,11 +18,11 @@ export class GalleryComponent implements OnInit, OnDestroy {
     constructor( private galleryService: GalleryService,
                  private titleService: Title,
                  public appService: AppService,
-                 private router: Router ) {
+                 private router: Router,
+                 public mobileService: MobileService) {
     }
 
     ngOnInit() {
-        console.log(window.innerHeight)
         this.titleService.setTitle( '🥔 Gallery' );
         this.appService.title = 'Gallery';
         this.appService.getAlbums().subscribe( albums => this.appService.albums = albums );
@@ -36,6 +38,13 @@ export class GalleryComponent implements OnInit, OnDestroy {
             this.appService.selectToggle( index, id );
         } else {
             this.router.navigate( [ '/album', id ] )
+        }
+    }
+
+    public longPress( index, id ) {
+        if ( this.mobileService.isMobile ) {
+            this.appService.selectToggle( index, id );
+            return false;
         }
     }
 

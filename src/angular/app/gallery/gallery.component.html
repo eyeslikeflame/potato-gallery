@@ -5,7 +5,8 @@
                 <i class="material-icons" (click)="appService.selectToggle(i, album._id)">check_circle</i>
             </div>
             <div class="gallery-list-content photo"
-                 (click)="albumClick(i, album?._id)">
+                 (click)="albumClick(i, album?._id)"
+                 (contextmenu)="longPress(i, album?._id)">
                 <div class="gallery-list-img" [ngStyle]="{'background-image': 'url(' + album.preview + ')'}"></div>
                 <span class="empty-album" *ngIf="!album.preview">This album is empty. Consider adding some pics</span>
             </div>
