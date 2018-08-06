@@ -36,20 +36,20 @@
         <li class="photo-list-item"
             *ngIf="appService.album && appService.album?.photos[i]"
             [ngClass]="{'active': active[i], 'selected': appService.selected[i]}">
-            <div class="select" *ngIf="!active[i] && !appService.selected[i]">
+            <div class="select" *ngIf="!active[i] && !appService.selected[i] && !mobileService.isMobile">
                 <i class="material-icons" (click)="appService.selectToggle(i, photo._id)">check_circle</i>
             </div>
             <div class="img-preload" *ngIf="!imgLoaded[i]">
                 <i class="material-icons">photo_size_select_actual</i>
             </div>
 
-            <div class="photo" (click)="photoClick(i, photo)">
+            <div class="photo" (click)="photoClick(i, photo)" (contextmenu)="longPress( i, photo )">
                 <img class="photo-list-img"
                      [src]="photo?.src"
                      (load)="imgLoaded($event, i)">
             </div>
 
-            <div class="photo-list-title">
+            <div class="photo-list-title" *ngIf="!mobileService.isMobile">
                 {{photo?.title}}
             </div>
         </li>

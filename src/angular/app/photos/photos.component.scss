@@ -3,6 +3,8 @@
 @import '~@material/button/mdc-button';
 @import "~@material/icon-button/mdc-icon-button";
 @import "~@material/snackbar/mdc-snackbar";
+
+@import '../../styles/vars';
 :host {
     flex: 1;
     position: relative;
@@ -29,9 +31,22 @@
 }
 
 .photo-list {
-    column-count: 5;
     column-gap: 0.5rem;
+    @include mobile {
+        column-count: 2;
+    }
 
+    @include hd-desktop {
+        column-count: 4;
+    }
+
+    @include fullhd-desktop {
+        column-count: 6;
+    }
+
+    @include qhd-desktop {
+        column-count: 10;
+    }
     .photo-list-item {
         /*ikr this is stupid but dunno what to do w/ this*/
         margin-bottom: calc(0.5rem - 2px);
@@ -90,14 +105,26 @@
         top: 0;
         left: 0;
         right: 0;
-        height: 4rem;
+
         display: flex;
         align-items: center;
-        padding: 0 2rem;
         z-index: 1;
 
+        @include mobile {
+            padding: 0 0.5rem;
+            height: 3rem;
+        }
+
+        @include hd-desktop {
+            padding: 0 2rem;
+            height: 4rem;
+        }
         .title {
             color: #ffffff;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            height: 1.1rem;
         }
 
         button {

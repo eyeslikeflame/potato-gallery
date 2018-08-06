@@ -5,9 +5,9 @@ import { MDCTextField } from '@material/textfield';
 import { MDCRipple } from '@material/ripple';
 import { MDCSnackbar } from '@material/snackbar';
 
-
 import { AppService } from '../app.service';
 import { PhotosService } from './photos.service';
+import { MobileService } from "../mobile.service";
 
 @Component( {
     selector:    'app-photos',
@@ -26,6 +26,13 @@ export class PhotosComponent implements OnInit, OnDestroy {
     public fileInput: any;
     public fullSize = {};
     public snackbar;
+
+    constructor( private photosService: PhotosService,
+                 private route: ActivatedRoute,
+                 private titleService: Title,
+                 public appService: AppService,
+                 public mobileService: MobileService) {
+    }
 
     @HostListener( 'dragover', [ "$event" ] )
     @HostListener( 'dragenter', [ "$event" ] )
@@ -79,11 +86,7 @@ export class PhotosComponent implements OnInit, OnDestroy {
         return status;
     }
 
-    constructor( private photosService: PhotosService,
-                 private route: ActivatedRoute,
-                 private titleService: Title,
-                 public appService: AppService ) {
-    }
+
 
     ngOnInit() {
         this.snackbar = new MDCSnackbar( document.querySelector( '.mdc-snackbar' ) );
@@ -120,6 +123,13 @@ export class PhotosComponent implements OnInit, OnDestroy {
             this.fullSize = photo;
         } else {
             this.appService.selectToggle( index, photo._id );
+        }
+    }
+
+    public longPress( index, id ) {
+        if ( this.mobileService.isMobile ) {
+            this.appService.selectToggle( index, id );
+            return false;
         }
     }
 

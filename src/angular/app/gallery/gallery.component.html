@@ -1,7 +1,7 @@
 <ul class="gallery-list album">
     <ng-container *ngFor="let album of appService.albums; let i = index;">
         <li class="gallery-list-item" *ngIf="album" [ngClass]="{'selected': appService.selected[i]}">
-            <div class="select" *ngIf="!appService.selected[i]">
+            <div class="select" *ngIf="!appService.selected[i] && !mobileService.isMobile">
                 <i class="material-icons" (click)="appService.selectToggle(i, album._id)">check_circle</i>
             </div>
             <div class="gallery-list-content photo"
