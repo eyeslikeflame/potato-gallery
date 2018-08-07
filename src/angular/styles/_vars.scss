@@ -4,25 +4,25 @@ $blue: #3126FF;
 $topaz: #A63D40;
 
 $mobile-width: 300px;
-$tablet-width: 800px;
+$tablet-width: 768px;
 $hd-desktop-width: 1280px;
 $fullhd-desktop-width: 1980px;
 $qhd-desktop-width: 2560px;
 
 @mixin mobile {
-    @media (min-width: #{$mobile-width}){
+    @media (min-width: #{$mobile-width}) {
         @content;
     }
 }
 
 @mixin hd-desktop {
-    @media (min-width: #{$tablet-width}){
+    @media (min-width: #{$tablet-width}) {
         @content;
     }
 }
 
 @mixin fullhd-desktop {
-    @media (min-width: #{$hd-desktop-width}){
+    @media (min-width: #{$hd-desktop-width}) {
         @content;
     }
 }

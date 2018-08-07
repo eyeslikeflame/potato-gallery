@@ -27,7 +27,7 @@
             z-index: 10;
         }
 
-        @include hd-desktop {
+        @include fullhd-desktop {
             right: 0;
             left: 0;
             bottom: 4rem;

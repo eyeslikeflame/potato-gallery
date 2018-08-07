@@ -1,13 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Meta } from '@angular/platform-browser';
+import { SwUpdate } from "@angular/service-worker";
 
 @Injectable( {
     providedIn: 'root'
 } )
 export class AppService {
 
-    constructor( private http: HttpClient, private meta: Meta ) {
+    constructor( private http: HttpClient,
+                  private meta: Meta,
+                  private updates: SwUpdate) {
+        updates.available.subscribe(event => {
+            updates.activateUpdate().then(() => document.location.reload());
+        });
     }
 
     public selected = {};
