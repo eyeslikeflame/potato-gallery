@@ -109,7 +109,7 @@ class AlbumsController {
         form.keepExtensions = true;
         form.uploadDir = path.join( globalAny.appRoot, '/pictures' );
         const parsed = await form.parse( request, ( err, fields, files ) => {
-            this.update( files, fields.title, request.params.id ).then( ( album: any ) => {
+            this.update( files, request.params.id ).then( ( album: any ) => {
                 this.getAlbum( request, response, album._id );
             } ).catch( err => {
                 response.status( 500 ).json( 'There was a problem with saving an album' );
@@ -184,29 +184,26 @@ class AlbumsController {
         } );
     }
 
-    private async update( files, title, id ) {
+    private async update( files, id ) {
         return new Promise( ( resolve, reject ) => {
-            Albums.findOneAndUpdate( {
+            Albums.find( {
                 _id: new Types.ObjectId( id )
-            }, {
-                title: title
-            }, {
-                upsert: true, 'new': true
-            } ).then( updated => {
+            } ).then( album => {
                 if ( files && files[ 0 ] ) {
-                    Photos.insertMany( this.format( files, updated._id ) ).then( photos => {
-                        if ( !updated.preview && photos[ 0 ] ) {
+                    Photos.insertMany( this.format( files, id ) ).then( photos => {
+                        if ( !album.preview && photos[ 0 ] ) {
                             Albums.update( {
-                                _id: updated._id
+                                _id: new Types.ObjectId( id )
                             }, {
                                 $set: {
                                     preview: photos[ 0 ]._id
                                 }
                             } ).then();
                         }
-                        resolve( updated );
+                        resolve( album );
                     } );
-
+                } else {
+                    reject('No files were provided')
                 }
 
             } );

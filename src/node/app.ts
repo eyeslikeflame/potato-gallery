@@ -8,10 +8,9 @@ import MongoClient from './models/db.model';
 import * as fs from 'fs';
 import { albums } from './routes/albums';
 import { photos } from './routes/photos';
+
 const globalAny: any = global;
-globalAny.appRoot    = process.cwd();
-
-
+globalAny.appRoot = process.cwd();
 
 class App {
     public express: express.Application;
@@ -22,11 +21,18 @@ class App {
         this.middleware();
         this.routes();
 
-        if (!fs.existsSync(path.join(globalAny.appRoot, '/pictures'))) {
-            fs.mkdirSync(path.join(globalAny.appRoot, '/pictures'));
+        if ( !fs.existsSync( path.join( globalAny.appRoot, '/pictures' ) ) ) {
+            fs.mkdirSync( path.join( globalAny.appRoot, '/pictures' ) );
+        }
+
+        if ( !fs.existsSync( path.join( globalAny.appRoot, '/pictures/webp' ) ) ) {
+            fs.mkdirSync( path.join( globalAny.appRoot, '/pictures/webp' ) );
+        }
+
+        if ( !fs.existsSync( path.join( globalAny.appRoot, '/pictures/jpeg' ) )) {
+            fs.mkdirSync( path.join( globalAny.appRoot, '/pictures/jpeg' ) );
         }
     }
-
 
     private middleware(): void {
         this.express.set( 'view engine', 'hbs' );
@@ -43,8 +49,8 @@ class App {
         this.express.use( '/api/photos', photos );
         this.express.use( '/api/albums', albums );
         this.express.get( '*', ( request, response ) => {
-            response.render( path.join( globalAny.appRoot , 'dist/index.hbs' ) );
-        });
+            response.render( path.join( globalAny.appRoot, 'dist/index.hbs' ) );
+        } );
     }
 }
 

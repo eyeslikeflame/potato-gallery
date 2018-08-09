@@ -18,6 +18,7 @@
         "@angular/platform-browser-dynamic": "^6.0.9",
         "@angular/pwa": "^0.6.8",
         "@angular/router": "^6.0.9",
+        "@angular/service-worker": "^6.0.9",
         "@material/button": "^0.38.0",
         "@material/fab": "^0.38.0",
         "@material/icon-button": "^0.38.0",
@@ -29,6 +30,7 @@
         "cookie-parser": "~1.4.3",
         "core-js": "^2.5.4",
         "debug": "~2.6.9",
+        "detect-browser": "^3.0.0",
         "express": "~4.16.0",
         "formidable": "^1.2.1",
         "hbs": "~4.0.1",
@@ -36,8 +38,8 @@
         "mongoose": "^5.2.3",
         "morgan": "~1.9.0",
         "rxjs": "^6.2.2",
-        "zone.js": "^0.8.26",
-        "@angular/service-worker": "^6.0.9"
+        "sharp": "^0.20.5",
+        "zone.js": "^0.8.26"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "~0.6.1",
