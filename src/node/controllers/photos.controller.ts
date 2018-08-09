@@ -6,6 +6,7 @@ import * as formidable from 'formidable';
 import * as path from 'path';
 import * as sharp from 'sharp'
 import { detect } from 'detect-browser';
+import { Buffer } from "buffer";
 
 const globalAny: any = global;
 globalAny.appRoot = process.cwd();
@@ -43,13 +44,12 @@ class PhotosController {
     }
 
     public async savePhotos( files, albumId ) {
-        console.log(files)
         function format( files, id ) {
             const temp = [];
             for ( let i in files ) {
                 temp.push( {
                     title:      files[ i ].name,
-                    src:        files[ i ].path.match( /[a-z0-9_.]+$/i ),
+                    src:        files[ i ].path.match( /[a-z0-9_.]+$/i )[ 0 ],
                     album:      new Types.ObjectId( id ),
                     uploadDate: new Date(),
                 } );
@@ -57,7 +57,27 @@ class PhotosController {
             return temp;
         }
 
-        return Photos.insertMany( format( files, albumId ) );
+        this.optimizePhotos( files );
+        // return Photos.insertMany( format( files, albumId ) );
+    }
+
+    private optimizePhotos( files ) {
+        let fileName;
+        let file;
+        for ( let i in files ) {
+            fileName = files[ i ].path.match( /[a-z0-9_.]+$/i ).toString();
+            file = fs.readFileSync( path.join( globalAny.appRoot, `/pictures/raw/${fileName}` ) );
+
+            sharp( file ).toFile( path.join( globalAny.appRoot, `/pictures/webp/${fileName}.webp` ) );
+            sharp( file ).toFile( path.join( globalAny.appRoot, `/pictures/jpeg/${fileName}.jpeg` ) );
+
+            sharp( file )
+                .resize( null, 300 )
+                .toFile( path.join( globalAny.appRoot, `/pictures/webp/preview_${fileName}.webp` ) );
+            sharp( file )
+                .resize( null, 300 )
+                .toFile( path.join( globalAny.appRoot, `/pictures/jpeg/preview_${fileName}.jpeg` ) );
+        }
     }
 
     public deletePhotos( request, response ) {

@@ -32,6 +32,10 @@ class App {
         if ( !fs.existsSync( path.join( globalAny.appRoot, '/pictures/jpeg' ) )) {
             fs.mkdirSync( path.join( globalAny.appRoot, '/pictures/jpeg' ) );
         }
+
+        if ( !fs.existsSync( path.join( globalAny.appRoot, '/pictures/raw' ) )) {
+            fs.mkdirSync( path.join( globalAny.appRoot, '/pictures/raw' ) );
+        }
     }
 
     private middleware(): void {

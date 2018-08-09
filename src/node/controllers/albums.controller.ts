@@ -1,18 +1,24 @@
-import { Albums } from '../models/albums.model';
-import { Photos } from '../models/photos.model';
-import { Types } from 'mongoose';
 import * as fs from 'fs';
 import * as formidable from 'formidable';
 import * as path from 'path';
-import { photos } from '../routes/photos';
 import { resolve } from 'dns';
+
+import { Albums } from '../models/albums.model';
+import { Photos } from '../models/photos.model';
+import { Types } from 'mongoose';
+
+import { photos } from '../routes/photos';
+
+import PhotosController from './photos.controller';
 
 const globalAny: any = global;
 globalAny.appRoot = process.cwd();
 
 class AlbumsController {
-    constructor() {
+    private photosController: PhotosController;
 
+    constructor() {
+        this.photosController = new PhotosController();
     }
 
     public getAlbums( request, response ) {
@@ -105,15 +111,16 @@ class AlbumsController {
     public async saveAlbum( request, response, update = false ) {
         const form = new formidable.IncomingForm();
         form.multiple = true;
-        form.hash = 'md5';
-        form.keepExtensions = true;
-        form.uploadDir = path.join( globalAny.appRoot, '/pictures' );
+        form.keepExtensions = false;
+        form.uploadDir = path.join( globalAny.appRoot, '/pictures/raw' );
         const parsed = await form.parse( request, ( err, fields, files ) => {
-            this.update( files, request.params.id ).then( ( album: any ) => {
-                this.getAlbum( request, response, album._id );
-            } ).catch( err => {
-                response.status( 500 ).json( 'There was a problem with saving an album' );
-            } );
+            console.log( files );
+            this.photosController.savePhotos( files, request.params.id )
+            // this.update( files, request.params.id ).then( ( album: any ) => {
+            //     this.getAlbum( request, response, album._id );
+            // } ).catch( err => {
+            //     response.status( 500 ).json( 'There was a problem with saving an album' );
+            // } );
         } );
 
     }
@@ -203,7 +210,7 @@ class AlbumsController {
                         resolve( album );
                     } );
                 } else {
-                    reject('No files were provided')
+                    reject( 'No files were provided' )
                 }
 
             } );
@@ -220,11 +227,11 @@ class AlbumsController {
         } ).then( updated => {
             response.json( true );
         } ).catch( error => {
-            response.status(500).json( {
-                err: error,
+            response.status( 500 ).json( {
+                err:     error,
                 message: 'Title was not saved properly'
             } )
-        })
+        } )
     }
 
     private format( files, id, ) {
