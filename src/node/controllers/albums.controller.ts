@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as formidable from 'formidable';
 import * as path from 'path';
-import { resolve } from 'dns';
+import * as rimraf from 'rimraf';
 
 import { Albums } from '../models/albums.model';
 import { Photos } from '../models/photos.model';
@@ -138,12 +138,7 @@ class AlbumsController {
                 }
             } ).then( photos => {
                 photos.map( el => {
-                    fs.unlink( path.join( globalAny.appRoot, '/pictures', el.src ), ( err ) => {
-                        if ( err ) {
-                            response.json( err );
-                        }
-                        console.log( 'deleted' );
-                    } );
+                    rimraf( path.join( globalAny.appRoot, `/pictures`, el.src ), () => {} );
                 } );
                 Photos.remove( {
                     album: {
@@ -206,7 +201,7 @@ class AlbumsController {
                             }
                         } ).then();
                         resolve( album );
-                    });
+                    } );
                 } else {
                     reject( 'No files were provided' )
                 }
