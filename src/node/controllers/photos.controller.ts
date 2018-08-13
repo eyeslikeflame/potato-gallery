@@ -4,6 +4,7 @@ import { Types } from 'mongoose';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as sharp from 'sharp'
+import * as rimraf from 'rimraf';
 
 const globalAny: any = global;
 globalAny.appRoot = process.cwd();
@@ -83,12 +84,7 @@ class PhotosController {
             }
         } ).then( photos => {
             photos.map( el => {
-                fs.unlink( path.join( globalAny.appRoot, '/pictures', el.src ), ( err ) => {
-                    if ( err ) {
-                        response.json( err );
-                    }
-                    console.log( 'deleted' );
-                } );
+                rimraf( path.join( globalAny.appRoot, `/pictures`, el.src ), () => {} );
             } );
 
             Photos.remove( {
@@ -103,7 +99,7 @@ class PhotosController {
                         _id: new Types.ObjectId( request.params.id )
                     }, {
                         $set: {
-                            preview: new Types.ObjectId( photo._id )
+                            preview: photo && new Types.ObjectId( photo._id )
                         }
                     } ).then();
                 } );

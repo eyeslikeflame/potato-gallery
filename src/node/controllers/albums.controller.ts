@@ -1,4 +1,3 @@
-import * as fs from 'fs';
 import * as formidable from 'formidable';
 import * as path from 'path';
 import * as rimraf from 'rimraf';
