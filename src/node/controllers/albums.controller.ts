@@ -115,12 +115,12 @@ class AlbumsController {
         form.uploadDir = path.join( globalAny.appRoot, '/pictures/raw' );
         const parsed = await form.parse( request, ( err, fields, files ) => {
             console.log( files );
-            this.photosController.savePhotos( files, request.params.id )
-            // this.update( files, request.params.id ).then( ( album: any ) => {
-            //     this.getAlbum( request, response, album._id );
-            // } ).catch( err => {
-            //     response.status( 500 ).json( 'There was a problem with saving an album' );
-            // } );
+
+            this.update( files, request.params.id ).then( ( album: any ) => {
+                this.getAlbum( request, response, album._id );
+            } ).catch( err => {
+                response.status( 500 ).json( 'There was a problem with saving an album' );
+            } );
         } );
 
     }
@@ -197,18 +197,16 @@ class AlbumsController {
                 _id: new Types.ObjectId( id )
             } ).then( album => {
                 if ( files && files[ 0 ] ) {
-                    Photos.insertMany( this.format( files, id ) ).then( photos => {
-                        if ( !album.preview && photos[ 0 ] ) {
-                            Albums.update( {
-                                _id: new Types.ObjectId( id )
-                            }, {
-                                $set: {
-                                    preview: photos[ 0 ]._id
-                                }
-                            } ).then();
-                        }
+                    this.photosController.savePhotos( files, id ).then( photos => {
+                        Albums.update( {
+                            _id: new Types.ObjectId( id )
+                        }, {
+                            $set: {
+                                preview: photos[ 0 ]._id
+                            }
+                        } ).then();
                         resolve( album );
-                    } );
+                    });
                 } else {
                     reject( 'No files were provided' )
                 }

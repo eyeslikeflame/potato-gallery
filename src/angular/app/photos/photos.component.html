@@ -45,7 +45,7 @@
 
             <div class="photo" (click)="photoClick(i, photo)" (contextmenu)="longPress( i, photo )">
                 <img class="photo-list-img"
-                     [src]="photo?.src"
+                     [src]="photo?.src + '?preview=1'"
                      (load)="imgLoaded($event, i)">
             </div>
 

@@ -6,6 +6,9 @@ import * as bodyParser from 'body-parser' ;
 import * as hbs from 'handlebars';
 import MongoClient from './models/db.model';
 import * as fs from 'fs';
+import * as useragent from 'express-useragent';
+import * as compression from 'compression';
+
 import { albums } from './routes/albums';
 import { photos } from './routes/photos';
 
@@ -25,15 +28,7 @@ class App {
             fs.mkdirSync( path.join( globalAny.appRoot, '/pictures' ) );
         }
 
-        if ( !fs.existsSync( path.join( globalAny.appRoot, '/pictures/webp' ) ) ) {
-            fs.mkdirSync( path.join( globalAny.appRoot, '/pictures/webp' ) );
-        }
-
-        if ( !fs.existsSync( path.join( globalAny.appRoot, '/pictures/jpeg' ) )) {
-            fs.mkdirSync( path.join( globalAny.appRoot, '/pictures/jpeg' ) );
-        }
-
-        if ( !fs.existsSync( path.join( globalAny.appRoot, '/pictures/raw' ) )) {
+        if ( !fs.existsSync( path.join( globalAny.appRoot, '/pictures/raw' ) ) ) {
             fs.mkdirSync( path.join( globalAny.appRoot, '/pictures/raw' ) );
         }
     }
@@ -45,7 +40,8 @@ class App {
         this.express.use( bodyParser.json() );
         this.express.use( bodyParser.urlencoded( { extended: false } ) );
         this.express.use( cookieParser() );
-
+        this.express.use( useragent.express() );
+        this.express.use( compression() );
         this.express.use( express.static( path.join( globalAny.appRoot, '/dist' ) ) );
     }
 

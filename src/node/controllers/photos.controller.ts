@@ -2,45 +2,32 @@ import { Albums } from '../models/albums.model';
 import { Photos } from '../models/photos.model';
 import { Types } from 'mongoose';
 import * as fs from 'fs';
-import * as formidable from 'formidable';
 import * as path from 'path';
 import * as sharp from 'sharp'
-import { detect } from 'detect-browser';
-import { Buffer } from "buffer";
 
 const globalAny: any = global;
 globalAny.appRoot = process.cwd();
 
 class PhotosController {
-    browser: detect;
 
     constructor() {
-        this.browser = detect();
+
     };
 
     public getPhoto( request, response ) {
-        // switch (this.browser && this.browser.name) {
-        //     case 'chrome':
-        //
-        //     default:
-        //         console.log('not supported');
-        // }
-        // response.sendFile( path.join( globalAny.appRoot, 'pictures', `${request.params.src}` ) );
-        const pathName = path.join( globalAny.appRoot, 'pictures', `${request.params.src}` );
-        this.formatPhoto( pathName, 'webp', { x: null, y: 500 }, request.params.src ).then( photo => {
-            // response.sendFile( path.join( globalAny.appRoot, 'pictures', `${request.params.src}` ) );
-            // response.set('Cache-Control', 'public, max-age=86400').send( photo );
-            response.send( photo );
-        } ).catch( err => {
-            console.log( err );
-        } );
-
-    }
-
-    public async formatPhoto( path: string, type: string, resolution: { x: number, y: number }, title ) {
-        const buffer = await sharp( path ).resize( resolution.x, resolution.y ).webp( { lossless: true } ).toBuffer();
-        // return sharp(buffer).toFile(`${title}.${type}`);
-        return buffer;
+        let type = '.jpeg';
+        let preview = '';
+        if (request.query.preview) {
+            preview = 'preview_';
+        }
+        switch ( request.useragent && request.useragent.browser ) {
+            case 'Chrome':
+                type = '.webp';
+                break;
+            default:
+                console.log( 'not supported' );
+        }
+        response.sendFile( path.join( globalAny.appRoot, `pictures/${request.params.src}`, `${preview}${request.params.src}${type}` ) );
     }
 
     public async savePhotos( files, albumId ) {
@@ -58,25 +45,33 @@ class PhotosController {
         }
 
         this.optimizePhotos( files );
-        // return Photos.insertMany( format( files, albumId ) );
+        return Photos.insertMany( format( files, albumId ) );
     }
 
-    private optimizePhotos( files ) {
+    private async optimizePhotos( files ) {
         let fileName;
         let file;
+        let dir;
         for ( let i in files ) {
             fileName = files[ i ].path.match( /[a-z0-9_.]+$/i ).toString();
             file = fs.readFileSync( path.join( globalAny.appRoot, `/pictures/raw/${fileName}` ) );
+            dir = path.join( globalAny.appRoot, `/pictures/${fileName}` );
+            fs.mkdirSync( dir );
+            sharp( file ).toFile( path.join( dir, `${fileName}.webp` ) );
+            sharp( file ).toFile( path.join( dir, `${fileName}.jpeg` ) );
 
-            sharp( file ).toFile( path.join( globalAny.appRoot, `/pictures/webp/${fileName}.webp` ) );
-            sharp( file ).toFile( path.join( globalAny.appRoot, `/pictures/jpeg/${fileName}.jpeg` ) );
+            await sharp( file )
+                .resize( null, 300 )
+                .toFile( path.join( dir, `preview_${fileName}.webp` ) );
+            await sharp( file )
+                .resize( null, 300 )
+                .toFile( path.join( dir, `preview_${fileName}.jpeg` ) );
 
-            sharp( file )
-                .resize( null, 300 )
-                .toFile( path.join( globalAny.appRoot, `/pictures/webp/preview_${fileName}.webp` ) );
-            sharp( file )
-                .resize( null, 300 )
-                .toFile( path.join( globalAny.appRoot, `/pictures/jpeg/preview_${fileName}.jpeg` ) );
+            fs.unlink( path.join( globalAny.appRoot, `/pictures/raw/${fileName}` ), err => {
+                if ( err ) {
+                    console.log( err );
+                }
+            } )
         }
     }
 
