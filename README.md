@@ -15,5 +15,4 @@
  6. It should be up and running on ```localhost:3000```
 
 #### Known issues
-- Upon uploading a big amount of pic at the same time, response, which contains src's comes earlier than pics are actually saved
 

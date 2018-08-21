@@ -45,7 +45,7 @@ class PhotosController {
             return temp;
         }
 
-        this.optimizePhotos( files );
+        await this.optimizePhotos( files );
         return Photos.insertMany( format( files, albumId ) );
     }
 

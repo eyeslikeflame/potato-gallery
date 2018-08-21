@@ -76,7 +76,7 @@ class AlbumsController {
             },
             {
                 $unwind: {
-                    'path':                       '$photos',
+                    'path': '$photos',
                     'preserveNullAndEmptyArrays': true
                 }
             },
@@ -113,10 +113,8 @@ class AlbumsController {
         form.keepExtensions = false;
         form.uploadDir = path.join( globalAny.appRoot, '/pictures/raw' );
         const parsed = await form.parse( request, ( err, fields, files ) => {
-            console.log( files );
-
             this.update( files, request.params.id ).then( ( album: any ) => {
-                this.getAlbum( request, response, album._id );
+                    this.getAlbum( request, response, album._id );
             } ).catch( err => {
                 response.status( 500 ).json( 'There was a problem with saving an album' );
             } );
@@ -137,7 +135,8 @@ class AlbumsController {
                 }
             } ).then( photos => {
                 photos.map( el => {
-                    rimraf( path.join( globalAny.appRoot, `/pictures`, el.src ), () => {} );
+                    rimraf( path.join( globalAny.appRoot, `/pictures`, el.src ), () => {
+                    } );
                 } );
                 Photos.remove( {
                     album: {

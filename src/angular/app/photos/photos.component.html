@@ -32,6 +32,29 @@
 </div>
 
 <ul class="photo-list">
+    <li class="photo-list-item" *ngIf="uploading">
+        <div class="photo uploading">
+            <svg viewBox="0 0 24 24"
+                 width="80"
+                 class="circle"
+                 xmlns="http://www.w3.org/2000/svg">
+
+                <g class="upload-finish-circle">
+                    <circle class="upload-finish-circle__1" cx="12" cy="12" r="10"></circle>
+                    <circle class="upload-finish-circle__2" cx="12" cy="12" r="11"></circle>
+                </g>
+                <circle class="upload-progress" cx="12" cy="12" r="10" fill="none"></circle>
+                <path class="upload-done" d="m3.988524,12.758958c0,0 5.102041,4.897959 5.040819,4.836737c0.061222,0.061222 11.285712,-10.755104 11.285712,-10.755104"/>
+            </svg>
+
+            <svg class="upload-error" xmlns="http://www.w3.org/2000/svg" *ngIf="uploadingError" width="80" viewBox="0 0 24 24">
+                <path class="upload-filled" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+            </svg>
+        </div>
+        <span class="upload-text">
+            Uploading {{uploading}} files
+        </span>
+    </li>
     <ng-container *ngFor="let photo of appService.album?.photos; let i = index">
         <li class="photo-list-item"
             *ngIf="appService.album && appService.album?.photos[i]"

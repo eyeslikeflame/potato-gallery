@@ -19,13 +19,15 @@ export class PhotosComponent implements OnInit, OnDestroy {
     public active = [];
     private files;
     public title = '';
-    public loading = false;
     public loadedPhotos = [];
     public albumId = null;
     public showDropOff = false;
     public fileInput: any;
     public fullSize: any = {};
     public snackbar;
+    public uploading = 0;
+    public uploadingDone = false;
+    public uploadingError: any = null;
 
     constructor( private photosService: PhotosService,
                  private route: ActivatedRoute,
@@ -53,6 +55,9 @@ export class PhotosComponent implements OnInit, OnDestroy {
         e.preventDefault();
         e.stopPropagation();
         this.showDropOff = false;
+        if ( this.uploading ) {
+            return false;
+        }
         const droppedFiles = e.dataTransfer.files || e.target.files;
         const validate = this.validateFiles( droppedFiles );
         if ( !validate.valid ) {
@@ -138,10 +143,13 @@ export class PhotosComponent implements OnInit, OnDestroy {
         } else {
             this.fullSize = photo;
         }
-        document.body.classList.toggle('full-size-photo')
+        document.body.classList.toggle( 'full-size-photo' )
     }
 
     public fabAction() {
+        if ( this.uploading ) {
+            return false;
+        }
         if ( this.appService.isSelected ) {
             this.appService.deletePhotos( this.albumId ).subscribe( ( deleted: any ) => {
                 for ( let i = 0; i < this.appService.album.photos.length; i++ ) {
@@ -168,19 +176,24 @@ export class PhotosComponent implements OnInit, OnDestroy {
     }
 
     public save() {
-        this.loading = true;
+        this.uploading = this.files.length;
+        const animation = this.uploadAnimation();
+        animation.start();
         return this.photosService.saveAlbum( this.files, this.albumId ).subscribe( ( album: any ) => {
-            this.loading = false;
-            this.appService.album = album;
+            animation.finish().then( _ => {
+                this.appService.album = album;
+                this.snackbar.show( dataObj );
+                return _;
+            } ).then( _ => {
+                this.fileInput.value = '';
+            } );
             const dataObj = {
-                message:       'Successfully added some amount of photos',
+                message:       `Successfully added ${this.files.length} photo${this.files.length > 1 ? 's' : ''}`,
                 actionText:    'Cool',
                 actionHandler: () => {
                     alert( 'cool' );
                 }
             };
-            this.fileInput.value = '';
-            this.snackbar.show( dataObj );
         } );
     }
 
@@ -198,4 +211,37 @@ export class PhotosComponent implements OnInit, OnDestroy {
     public imgLoaded( event, i ) {
         this.imgLoaded[ i ] = true;
     }
+
+    private uploadAnimation() {
+        let circle: any;
+        const _this = this;
+        setTimeout( () => {
+            circle = document.querySelector( '.circle' );
+            circle.classList.remove( 'finished' );
+        }, 0 );
+
+        function start() {
+            setTimeout( () => {
+                circle.classList.add( 'unfinished' );
+            }, 0 );
+        }
+
+        async function finish() {
+            circle.classList.remove( 'unfinished' );
+            circle.classList.add( 'finished' );
+            return await new Promise( resolve => {
+                setTimeout( () => {
+                    _this.uploading = 0;
+                    circle.classList.remove( 'finished' );
+                    resolve( true );
+                }, 1150 );
+            } )
+        }
+
+        return {
+            start:  start,
+            finish: finish
+        }
+    }
+
 }

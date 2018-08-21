@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { fromEvent } from 'rxjs';
-import { ajax } from 'rxjs/ajax';
 import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 @Injectable( {
@@ -24,13 +23,13 @@ export class PhotosService {
         return this.http.patch( `/api/albums/update/${id}`, formData );
     }
 
-    public debounceSave(input, id) {
-        return fromEvent(input, 'input').pipe(
-            map((e: any) => e.target.value),
-            filter(text => text.length > 2),
-            debounceTime(500),
+    public debounceSave( input, id ) {
+        return fromEvent( input, 'input' ).pipe(
+            map( ( e: any ) => e.target.value ),
+            filter( text => text.length > 2 ),
+            debounceTime( 500 ),
             distinctUntilChanged(),
-            switchMap((value) => this.http.patch( `/api/albums/update/${id}/title`, {title: value} ))
+            switchMap( ( value ) => this.http.patch( `/api/albums/update/${id}/title`, { title: value } ) )
         );
     }
 
