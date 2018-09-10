@@ -9,11 +9,11 @@ import { SwUpdate } from "@angular/service-worker";
 export class AppService {
 
     constructor( private http: HttpClient,
-                  private meta: Meta,
-                  private updates: SwUpdate) {
-        updates.available.subscribe(event => {
-            updates.activateUpdate().then(() => document.location.reload());
-        });
+                 private meta: Meta,
+                 private updates: SwUpdate ) {
+        updates.available.subscribe( event => {
+            updates.activateUpdate().then( () => document.location.reload() );
+        } );
     }
 
     public selected = {};
@@ -21,6 +21,7 @@ export class AppService {
     public title = '';
     public albums;
     public album;
+    public searchPhrase = '';
 
     public checkIfSelected() {
         this.isSelected = Object.keys( this.selected ).length;
@@ -47,6 +48,7 @@ export class AppService {
     public removeData() {
         this.album = null;
         this.albums = null;
+        this.searchPhrase = '';
         this.clearSelection()
     }
 
@@ -69,5 +71,10 @@ export class AppService {
 
     public favorite( id ) {
         return this.http.patch( `/api/albums/favorite/${id}`, {} );
+    }
+
+    public filter( value ) {
+        const regex = new RegExp( this.searchPhrase, 'gi' );
+        return value.search( regex ) != -1;
     }
 }

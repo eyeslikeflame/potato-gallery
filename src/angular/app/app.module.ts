@@ -11,12 +11,14 @@ import { AppService } from "./app.service";
 import { MobileService } from "./mobile.service";
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { SearchBarComponent } from './search-bar/search-bar.component';
 
 @NgModule( {
     declarations: [
         AppComponent,
         PhotosComponent,
-        GalleryComponent
+        GalleryComponent,
+        SearchBarComponent
     ],
     imports:      [
         HttpClientModule,

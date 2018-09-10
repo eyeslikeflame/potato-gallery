@@ -1,0 +1,15 @@
+<div class="search-bar" [ngClass]="{'active': showSearchBar, 'selected': appService.isSelected}">
+    <button class="mdc-icon-button material-icons"
+            (click)="toggleSearch()">{{showSearchBar ? 'close' : 'search'}}</button>
+    <div class="mdc-text-field mdc-text-field--fullwidth" *ngIf="showSearchBar">
+        <input class="mdc-text-field__input"
+               [(ngModel)]="appService.searchPhrase"
+               id="potato-search"
+               name="potato-search"
+               type="text"
+               autocomplete="off"
+               placeholder="Search">
+        <div class="mdc-line-ripple"></div>
+    </div>
+</div>
+

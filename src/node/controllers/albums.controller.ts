@@ -176,7 +176,9 @@ class AlbumsController {
     }
 
     public create( request, response ) {
-        return Albums.create( {} ).then( album => {
+        return Albums.create( {
+            title: ''
+        } ).then( album => {
             response.status( 201 ).json( {
                 id:      album._id,
                 message: 'Album is successfully created'

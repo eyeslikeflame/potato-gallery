@@ -62,7 +62,7 @@
 
             &::before {
                 content: '';
-                background: url('/assets/img/check.svg') no-repeat;
+                background: url('/assets/icons/check.svg') no-repeat;
                 width: 3rem;
                 height: 3rem;
                 z-index: 2;
@@ -104,7 +104,6 @@
         position: absolute;
         z-index: 10;
         cursor: pointer;
-        transition: opacity 100ms;
         padding: 0.5rem;
         left: 0;
         right: 0;
@@ -130,7 +129,6 @@
         padding: 0.5rem;
         color: #ffffff;
         opacity: 0;
-        transition: opacity 100ms;
         background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
         word-break: break-all;
         border-radius: 0 0 0.5rem 0.5rem;

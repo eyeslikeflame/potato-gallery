@@ -1,0 +1,50 @@
+@import "~@material/icon-button/mdc-icon-button";
+@import '~@material/textfield/mdc-text-field';
+
+@import '../../styles/vars';
+
+:host {
+
+}
+
+.search-bar {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-flow: row-reverse;
+    align-items: center;
+
+    /*same as header*/
+    @include mobile {
+        padding: 0 0.5rem;
+    }
+
+    @include hd-desktop {
+        padding: 0 2rem;
+    }
+
+    &.active {
+        left: 0;
+    }
+
+    &.selected {
+        input {
+            background: $indigo;
+            color: rgba(255, 255, 255, 0.87)!important;
+            caret-color: #ffffff!important;
+            &:focus {
+                color: #ffffff;
+            }
+        }
+        .mdc-text-field {
+            background:  #ffffff!important;
+        }
+    }
+
+    input {
+        transition: 200ms ease;
+        background: #ffffff;
+    }
+}
