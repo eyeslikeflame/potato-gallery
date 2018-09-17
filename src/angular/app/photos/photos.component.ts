@@ -124,7 +124,7 @@ export class PhotosComponent implements OnInit, OnDestroy {
 
     public photoClick( index, photo? ) {
         if ( !this.appService.isSelected ) {
-            this.fullSizeToggle( photo );
+            this.fullSizeToggle( photo, index );
         } else {
             this.appService.selectToggle( index, photo._id );
         }
@@ -137,13 +137,18 @@ export class PhotosComponent implements OnInit, OnDestroy {
         }
     }
 
-    public fullSizeToggle( photo? ) {
+    public fullSizeToggle( photo?, index? ) {
         if ( this.fullSize.src ) {
             this.fullSize = {};
         } else {
             this.fullSize = photo;
+            this.fullSize.$index = index;
+            setTimeout( () => {
+                //ikr, but this is needed for arrows to work
+                (<any>document.querySelector( '.full-size' )).focus();
+            } )
         }
-        document.body.classList.toggle( 'full-size-photo' )
+        document.body.classList.toggle( 'full-size-photo' );
     }
 
     public fabAction() {
@@ -244,4 +249,20 @@ export class PhotosComponent implements OnInit, OnDestroy {
         }
     }
 
+    public slide( i, event? ) {
+        if ( event && event.key === 'ArrowLeft' ) {
+            i  = -1;
+        } else if ( event && event.key === 'ArrowRight' ) {
+            i  = 1;
+        }
+
+        let newIndex = this.fullSize.$index + i;
+        if ( newIndex < 0 ) {
+            newIndex = this.appService.album.photos.length - 1;
+        } else if ( newIndex >= this.appService.album.photos.length ) {
+            newIndex = 0;
+        }
+        this.fullSize = this.appService.album.photos[ newIndex ];
+        this.fullSize.$index = newIndex;
+    }
 }

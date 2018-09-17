@@ -206,7 +206,21 @@
         }
     }
 
+    .full-size-arrow {
+        position: absolute;
+        z-index: 10;
+        color: #ffffff;
 
+        &__left {
+            left: 1rem;
+        }
+        &__right {
+            right: 1rem;
+        }
+        @include mobile {
+            display: none;
+        }
+    }
     img {
         position: fixed;
         max-width: 100%;

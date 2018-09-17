@@ -6,7 +6,7 @@
     </div>
 </div>
 
-<div class="full-size" *ngIf="fullSize.src">
+<div class="full-size" *ngIf="fullSize.src" (keyup)="slide( null, $event )" tabindex="0">
     <div class="header-clone">
         <button class="mdc-icon-button material-icons"
                 (click)="fullSizeToggle()">arrow_back
@@ -14,7 +14,17 @@
         <div class="title">{{fullSize.title}}</div>
     </div>
 
+    <button class="mdc-icon-button full-size-arrow full-size-arrow__left"
+            (click)="slide( -1 )">
+        <i class="material-icons mdc-icon-button__icon">arrow_back_ios</i>
+    </button>
+
     <img [src]="fullSize.src" draggable="false" alt="">
+
+    <button class="mdc-icon-button full-size-arrow full-size-arrow__right"
+            (click)="slide( 1 )">
+        <i class="material-icons mdc-icon-button__icon">arrow_forward_ios</i>
+    </button>
 </div>
 
 <div class="manage">
@@ -44,11 +54,14 @@
                     <circle class="upload-finish-circle__2" cx="12" cy="12" r="11"></circle>
                 </g>
                 <circle class="upload-progress" cx="12" cy="12" r="10" fill="none"></circle>
-                <path class="upload-done" d="m3.988524,12.758958c0,0 5.102041,4.897959 5.040819,4.836737c0.061222,0.061222 11.285712,-10.755104 11.285712,-10.755104"/>
+                <path class="upload-done"
+                      d="m3.988524,12.758958c0,0 5.102041,4.897959 5.040819,4.836737c0.061222,0.061222 11.285712,-10.755104 11.285712,-10.755104"/>
             </svg>
 
-            <svg class="upload-error" xmlns="http://www.w3.org/2000/svg" *ngIf="uploadingError" width="80" viewBox="0 0 24 24">
-                <path class="upload-filled" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+            <svg class="upload-error" xmlns="http://www.w3.org/2000/svg" *ngIf="uploadingError" width="80"
+                 viewBox="0 0 24 24">
+                <path class="upload-filled"
+                      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
             </svg>
         </div>
         <span class="upload-text">
@@ -80,6 +93,7 @@
     </ng-container>
 </ul>
 
+<!--todo make separate component for this element-->
 <button class="mdc-fab app-fab--absolute"
         (click)="fabAction()"
         [ngClass]="{'upload': showDropOff, 'fab-indigo': appService.isSelected || showDropOff}">
