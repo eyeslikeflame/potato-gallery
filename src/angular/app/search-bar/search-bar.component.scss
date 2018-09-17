@@ -18,13 +18,17 @@
 
     /*same as header*/
     @include mobile {
-        padding: 0 0.5rem;
+        padding: 0 1rem;
     }
 
     @include hd-desktop {
         padding: 0 2rem;
     }
-
+    .mdc-text-field--fullwidth {
+        @include mobile {
+            height: 2.5rem;
+        }
+    }
     &.active {
         left: 0;
     }
